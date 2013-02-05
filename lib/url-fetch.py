@@ -16,7 +16,7 @@ page = urlhandle.read()
 soup = BeautifulSoup(page)
 
 getters = [{'name': 'remote_menu.main.inner', 'selector': '.primary-menu-inner .menu li'},
-			{'name': 'remote_menu.secondary.admiss.how_to_apply.', 'selector': '.menu-name-menu-main-ug'},
+			{'name': 'remote_menu.secondary.admiss.how_to_apply', 'selector': '.menu-name-menu-main-ug'},
 			{'name': 'remote_menu.services', 'selector': '.menu-name-secondary-links .menu'},
 			{'name': 'remote_menu.social', 'selector': '#block-menu-menu-social-links .menu'}]
 

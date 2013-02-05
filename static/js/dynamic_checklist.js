@@ -6,10 +6,12 @@ Build and persist faux checkboxes
 
 // Facebook developer: https://developers.facebook.com/apps
 
-var remote_main_menu_url = "static/cache/remote_main_menu.html"
-var remote_admiss_menu_url = "static/cache/remote_admiss_menu.html"
-var remote_services_menu_url = "static/cache/remote_services_menu.html"
-var remote_social_menu_url = "static/cache/remote_social_menu.html"
+var page_partial_cache_url = "/assets/page-partials/"
+
+var remote_main_menu_url = page_partial_cache_url + "remote_menu.main.inner.html"
+var remote_admiss_menu_url = page_partial_cache_url + "remote_menu.secondary.admiss.how_to_apply.html"
+var remote_services_menu_url = page_partial_cache_url + "remote_menu.services.html"
+var remote_social_menu_url = page_partial_cache_url + "remote_menu.social.html"
 
 $(document).ready(function () {
 
@@ -146,9 +148,6 @@ $(document).ready(function () {
     var logout_link = $(".fb a.logout")
     var currentUser = Parse.User.current()
     
-    //$("#main-menu").load(remote_main_menu_url)
-    $("#main-menu").load("static/cache/remote_main_menu.html")
-    
     // TEST
     $('#destroy').click(function() {
         currentUser.destroy({
@@ -233,7 +232,7 @@ $(document).ready(function () {
     } // end else
     
     
-    
+    $("#main-menu").load(remote_main_menu_url)
     $("#admiss_menu").load(remote_admiss_menu_url, function() {
 		$(this).find("ul").addClass("nav nav-tabs nav-stacked")
 		$(this).find('*').removeClass("active active-trail")
@@ -243,7 +242,7 @@ $(document).ready(function () {
 			list.find("a:first").addClass("dropdown-toggle").attr({'href':'#', 'data-toggle':'dropdown'}).append('<b class="caret"></b>')
 			list.find("ul").addClass('dropdown-menu')
 		})
-		$('.dropdown-toggle').dropdown()
+		//$('.dropdown-toggle').dropdown()
 	})
     $("#footer .service_menu").load(remote_services_menu_url)
     $("#footer .social_menu").load(remote_social_menu_url)
