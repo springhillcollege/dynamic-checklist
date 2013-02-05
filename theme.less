@@ -1,0 +1,293 @@
+// BEGIN THEME
+// -----------
+
+// @import "Kickstrap/themes/cosmo/variables.less";		
+// @import "Kickstrap/themes/cosmo/bootswatch.less";		
+// Replace the path with any .less file in the 'themes' folder.
+
+// Tweak your current theme here, or comment-out the predefined theme from settings
+// and start fresh below.
+
+/* bootstrap overrides */
+@navbarText:                      @white;
+@navbarLinkColor:                 @white;
+@navbarLinkColorHover:            @grayLighter;
+@navbarLinkColorActive:           @grayDark;
+@navbarLinkBackgroundHover:       transparent;
+@navbarLinkBackgroundActive:      darken(@navbarBackground, 5%);
+
+@navbarBackgroundHighlight:       #42145F;
+
+@headingsFontFamily:    @serifFontFamily; // empty to use BS default, @baseFontFamily
+@headingsColor:         #961E25; // empty to use BS default, @textColor
+
+@linkColor:             #185EA4;
+@linkColorHover:        darken(@linkColor, 15%);
+
+h1 { font-size: @baseFontSize * 2.0; }
+h2 { font-size: @baseFontSize * 1.7; }
+h3 { font-size: @baseFontSize * 1.3; }
+/* END bootstrap overrides */
+
+/* vars and mixins */
+
+@highlightColor: #B59D63;
+@highlightColor2: #D3C397;
+
+.bar-gradient() {
+	background: #42145f;
+	background: -moz-linear-gradient(top, #5f1d89 0%, #42145f 8%, #42145f 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #5f1d89), color-stop(8%, #42145f), color-stop(100%, #42145f));
+	background: -webkit-linear-gradient(top, #5f1d89 0%, #42145f 8%, #42145f 100%);
+	background: -o-linear-gradient(top, #5f1d89 0%, #42145f 8%, #42145f 100%);
+	background: -ms-linear-gradient(top, #5f1d89 0%, #42145f 8%, #42145f 100%);
+	background: linear-gradient(to bottom, #5f1d89 0%, #42145f 8%, #42145f 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='@purpleLight', endColorstr='@purple', GradientType=0);
+}
+
+.bar-gradient-rev() {
+	background: #5f1d89; /* Old browsers */
+	background: -moz-linear-gradient(top,  #5f1d89 0%, #42145f 91%, #42145f 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#5f1d89), color-stop(91%,#42145f), color-stop(100%,#42145f)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #5f1d89 0%,#42145f 91%,#42145f 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #5f1d89 0%,#42145f 91%,#42145f 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #5f1d89 0%,#42145f 91%,#42145f 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #5f1d89 0%,#42145f 91%,#42145f 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5f1d89', endColorstr='#42145f',GradientType=0 ); /* IE6-9 */
+}
+
+.box-transition() {
+	-webkit-transition: height .4s linear;
+	-moz-transition: height .4s linear;
+	-ms-transition: height .4s linear;
+	-o-transition: height .4s linear;
+	transition: height .4s linear;
+	-webkit-transition: padding-bottom .4s linear;
+	-moz-transition: padding-bottom .4s linear;
+	-ms-transition: padding-bottom .4s linear;
+	-o-transition: padding-bottom .4s linear;
+	transition: padding-bottom .4s linear;
+}
+
+.rounder(@radius:4px) {
+	-moz-border-radius: @radius;
+    -webkit-border-radius: @radius;
+    border-radius: @radius;
+}
+
+.bordered(@color:#ccc) {
+	border: 1px solid @color;
+}
+
+.box {
+	.rounder(5px);
+    .bordered(#ddd);
+    padding: 5px 10px;
+    margin-bottom: 10px;
+}
+/* END vars and mixins */
+
+
+body {
+	padding-top: 0 !important;
+}
+
+#top-banner {
+	background: url("static/images/SHC_logo.png") no-repeat scroll center 15px #42145f;
+	background-size: 320px auto;
+	height: 75px;
+	text-indent: -9999px;
+	padding: 15px;
+}
+.navbar-inner {
+	.bar-gradient();
+	border-radius: 0;
+}
+.navbar .nav {
+	float: none; 
+	text-align: center;
+	> li {
+		float: none; 
+		display: inline;
+	}
+	> li > a {
+		display: inline-block;
+		&:hover {
+			.bar-gradient-rev();
+		}
+	}
+}
+
+/*
+ * #admiss_menu ul ul {
+	display: none; 
+}
+*/
+
+.right-column .inner {
+	.box();
+}
+
+#footer {
+	background: @highlightColor;
+	height: auto;
+	min-height: 4em;
+	padding: 20px;
+	li {
+		list-style: none;
+	}
+	a {
+		color: @white;
+	}
+	.service_menu {
+		text-align: right;
+		border-right: 1px solid @highlightColor2;
+		padding-right: 30px;
+	}
+	.social_menu {
+		ul {
+			margin-left: 0;
+		}
+	}
+}
+
+.social_menu {
+	a.facebook,
+	a.twitter,
+	a.flickr,
+	a.youtube {
+		padding-left: 20px;
+	}
+	a.facebook {
+		background: url("static/images/small-facebook-icon.png") no-repeat scroll 0 0 transparent;
+	}
+	a.twitter {
+		background: url("static/images/small-tw-icon.png") no-repeat scroll 0 0 transparent;
+	}
+	a.flickr {
+		background: url("static/images/small-flickr-icon.png") no-repeat scroll 0 0 transparent;
+	}
+	a.youtube {
+		background: url("static/images/small-yt-icon.png") no-repeat scroll 0 0 transparent;
+	}
+}
+
+.checker_message {
+    .box;
+    color: #444;
+    .status {
+		background: url(static/images/checkbox_yes.png) no-repeat left top;
+		min-height: 32px;
+		padding-left: 32px;
+	}
+}
+
+.checker.active .checker_item:hover {
+	cursor: pointer;
+}
+
+.checker_item {
+    float: left;
+    width: 24px;
+    height: 24px;
+    background: url(static/images/checkbox_no.png) no-repeat left center;
+    background-size: 100%;
+    margin-right: .3em;
+    color: #FFF;
+    .checker.checked & {
+		background: url(static/images/checkbox_yes.png) no-repeat left center;
+		background-size: 100%;
+	}
+}
+
+.checker_working {
+    background: url(static/images/checkbox_working.gif) no-repeat left center !important;
+    background-size: 100%;
+}
+
+
+.element-invisible {
+    clip: rect(1px, 1px, 1px, 1px);
+    height: 1px;
+    overflow: hidden;
+    position: absolute !important;
+}
+
+@media (min-width: 1200px) {
+
+}
+
+@media (min-width: 980px) and (max-width: 1199px) {
+	.navbar .nav {
+		> li > a {
+			padding: 10px 7px;
+			//font-size: 95%;
+			display: inline-block;
+		}
+	}
+}
+
+@media (max-width: 979px) {
+  .navbar .nav {
+    text-align: left;
+    font-size: 110%;
+	> li > a {
+		display: block;
+	}
+  }
+}
+
+@media (min-width: 768px) and (max-width: 979px) {
+  #top-banner {
+    height: 65px;
+    background-size: 300px;
+    //.box-transition();
+  }
+  h1 {
+    font-size: 30.8px;
+  }
+  h2 {
+    font-size: 25.200000000000003px;
+  }
+  h3 {
+    font-size: 19.6px;
+  }
+  h4 {
+    font-size: 14px;
+  }
+}
+@media (max-width: 767px) {
+  #top-banner {
+    background-size: 280px;
+    height: 80px;
+    padding: 8px;
+    //.box-transition();
+  }
+  h1 {
+    font-size: 26.95px;
+  }
+  h2 {
+    font-size: 22.049999999999997px;
+  }
+  h3 {
+    font-size: 17.15px;
+  }
+  h4 {
+    font-size: 12.25px;
+  }
+}
+@media (max-width: 480px) {
+  h1 {
+    font-size: 23.099999999999998px;
+  }
+  h2 {
+    font-size: 18.9px;
+  }
+  h3 {
+    font-size: 14.7px;
+  }
+  h4 {
+    font-size: 10.5px;
+  }
+}
+

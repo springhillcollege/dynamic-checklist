@@ -1,0 +1,14 @@
+{
+    "applications": {
+        "_default": {
+            "link": "application checklist"
+        }, 
+        "application checklist": {
+            "applicationId": "EmDT6jreUuJ8pJ4ktC1BVgIGFerUpAqw4cTnodGM", 
+            "masterKey": "3MxyJSG9q78YKJDPzvwZNEJsfY3lTwuTUS2QSHIk"
+        }
+    }, 
+    "global": {
+        "parseVersion": "1.1.15"
+    }
+}

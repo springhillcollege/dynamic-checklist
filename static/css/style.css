@@ -1,0 +1,58 @@
+/*------------------------------------*\
+  MAIN
+\*------------------------------------*/
+
+/*
+body {
+    font-family: Verdana, sans-serif;
+}
+
+h1, h2, h3, h4 {
+    font-family: Georgia, serif;
+}
+
+.content {
+    width: 700px;
+    margin: 20px auto;
+}
+*/
+
+.checker_message {
+    border: 1px solid #ccc;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin: 0 0 10px 10px;
+    color: #444;
+}
+
+.checker_message .status {
+    background: url(../images/checkbox_yes.png) no-repeat left top;
+    min-height: 32px;
+    padding-left: 32px;
+}
+
+.checker.active .checker_item:hover {
+	cursor: pointer;
+}
+
+span.checker_item {
+    float: left;
+    width: 24px;
+    height: 24px;
+    background: url(../images/checkbox_no.png) no-repeat left top;
+    background-size: 100%;
+    margin-right: .3em;
+    color: #FFF;
+}
+
+.checker.checked span.checker_item {
+    background: url(../images/checkbox_yes.png) no-repeat left top;
+    background-size: 100%;
+}
+
+.checker_working {
+    background: url(../images/checkbox_working.gif) no-repeat left top !important;
+    background-size: 100%;
+}
