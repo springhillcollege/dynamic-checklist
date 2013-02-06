@@ -13,7 +13,7 @@ var remote_admiss_menu_url = page_partial_cache_url + "remote_menu.secondary.adm
 var remote_services_menu_url = page_partial_cache_url + "remote_menu.services.html"
 var remote_social_menu_url = page_partial_cache_url + "remote_menu.social.html"
 
-$(document).ready(function () {
+ks.ready(function() {
 
     /* TODO
      * Build user class to have available throughout code
@@ -55,6 +55,16 @@ $(document).ready(function () {
         $(".loggedin").show();
     }
     
+    var check_complete = function() {
+		if (checkers.length == $('.checker.checked').length) {
+			$.pnotify({
+				title: 'All done!',
+				text: "Congrats! You're ready to be a Badger!",
+				type: 'success',
+			})
+		}
+	}
+    
     var build_checkers = function() {
         var chklist = null
         var checked = []
@@ -88,6 +98,7 @@ $(document).ready(function () {
                         checker.toggleClass("checked");
                         show_message()
                         checker_item.removeClass("checker_working")
+                        check_complete()
                     },
                     error: function(model, error) {
                         alert("Something went wrong and your choice was not saved. Please try again.")
@@ -142,6 +153,8 @@ $(document).ready(function () {
         checkers.removeClass("active").addClass("checked").find(".checker_item").unbind("click")
     }
 
+
+
     var checkers = $(".checker")
     var message_area = $(".checker_message")
     var login_link = $(".fb a.login")
@@ -190,16 +203,29 @@ $(document).ready(function () {
                         })
                     });
                     // User signed up and logged in through Facebook
-                    //alert("User signed up and logged in through Facebook!");
+                    $.pnotify({
+						title: 'Hi ' + currentUser.get('name'),
+						text: 'You have successfully registered through Facebook.',
+						type: 'info',
+					})
+                    
                 } else {
 					// User logged in through Facebook
-                  //alert("User logged in through Facebook!");
+					$.pnotify({
+						title: 'Hi ' + currentUser.get('name'),
+						text: 'You have successfully signed in through Facebook.',
+						type: 'info',
+					})
                 }
                 show_loggedin_msg()
                 show_message()
             },
             error: function(user, error) {
-              alert("User cancelled the Facebook login or did not fully authorize.");
+				$.pnotify({
+					title: 'Whoops',
+					text: 'User cancelled the Facebook login or did not fully authorize.',
+					type: 'error',
+				})
             }
         });
         return false;
@@ -209,6 +235,11 @@ $(document).ready(function () {
         Parse.User.logOut()
         show_anon_msg()
         build_dummy_checkers(false)
+        $.pnotify({
+			title: 'Bye',
+			text: 'You have successfully signed out.',
+			type: 'info',
+		})
         return false
     })
     

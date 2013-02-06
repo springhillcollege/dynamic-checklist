@@ -6,7 +6,7 @@
    // APPS
    // -------
 
-      @apps: "//templayed, //pinesnotify, bootstrap, //retina, //bootstrap/transition, bootstrap/collapse, //knockout, //updater"; 
+      @apps: "//templayed, pinesnotify, bootstrap, //retina, //bootstrap/transition, bootstrap/collapse, //knockout, //updater"; 
       // Name should match the app's folder name in Kickstrap/apps/.
 
    // WEBSITE SETTINGS
@@ -23,7 +23,7 @@
       @import "Kickstrap/extras/console.less"; 					
       // Let Kickstrap write to console
 
-      //@import "Kickstrap/extras/caching.less"; 				
+      @import "Kickstrap/extras/caching.less"; 				
       // Cache Kickstrap (Makes your site faster)
       // Use "clearCache()" in the console to update.
 
@@ -48,14 +48,14 @@
       //@import "Kickstrap/bootstrap/less/code.less";
       //@import "Kickstrap/extras/pretty-print.less";
       //@import "Kickstrap/bootstrap/less/forms.less";
-     // @import "Kickstrap/bootstrap/less/tables.less";
-      @import "Kickstrap/extras/horizontal-lists.less";
+      //@import "Kickstrap/bootstrap/less/tables.less";
+      //@import "Kickstrap/extras/horizontal-lists.less";
       //@import "Kickstrap/extras/sticky-footer.less";
 
       // Components: common
-      // @import "Kickstrap/bootstrap/less/sprites.less"; 
-      // @import "Kickstrap/extras/sprites.less"; // Uncomment these two @imports...
-      @import "Kickstrap/extras/icons.less"; // ...and comment this to revert to regular glyphicons
+      @import "Kickstrap/bootstrap/less/sprites.less"; 
+      @import "Kickstrap/extras/sprites.less"; // Uncomment these two @imports...
+      //@import "Kickstrap/extras/icons.less"; // ...and comment this to revert to regular glyphicons
       @import "Kickstrap/bootstrap/less/dropdowns.less";
       @import "Kickstrap/bootstrap/less/wells.less";
       
@@ -66,7 +66,7 @@
       // Components: Buttons & Alerts
       //@import "Kickstrap/bootstrap/less/buttons.less";
       //@import "Kickstrap/bootstrap/less/button-groups.less";
-      //@import "Kickstrap/bootstrap/less/alerts.less"; // Note: alerts share common CSS with buttons and thus have styles in buttons.less
+      @import "Kickstrap/bootstrap/less/alerts.less"; // Note: alerts share common CSS with buttons and thus have styles in buttons.less
 
       // Components: Nav
       @import "Kickstrap/bootstrap/less/navs.less";
