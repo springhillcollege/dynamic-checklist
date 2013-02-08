@@ -13,12 +13,12 @@
   <style type="text/css">.hidden{margin:20px;border:5px solid #a24c4c;background-color:red;padding:10px;width:400px;color:white;font-family:helvetica,sans-serif}</style>
   <!-- compiling less into css on server -->
   <!-- comment this line and uncomment following two to compile less on client for development -->
-  <link rel="stylesheet" type="text/css" href="kickstrap.css">
-  
 <!--
+  <link rel="stylesheet" type="text/css" href="kickstrap.css">
+-->
+  
   <link rel="stylesheet/less" type="text/css" href="kickstrap.less">
   <script src="Kickstrap/js/less-1.3.0.min.js"></script>
--->
   <script type="text/javascript" src="https://www.parsecdn.com/js/parse-1.1.15.min.js"></script>
   <!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 </head>
@@ -86,68 +86,69 @@
 
 	<section class="content row">
 		<div class="container">
-		<h1>SHC Application Checklist <small>beta</small></h1>
-		<div class="row">
-			<div class="span5 left-column">
-				<div class="checker_message" style="display:none;">
-					<p class="loader" style="display:none;">loading...</p>
-					<p class="status loggedin">Completed <strong><span class="n_checked"></span></strong> of <strong><span class="n_checker"></span></strong> items</p>
-					<div class="fb">
-						<p class="anon"><a href="#" class="login">Log in with <img src="static/images/small-facebook-icon.png"/></a> and we will keep track of your progress.</p>
-						<p class="loggedin" ><img src="static/images/small-facebook-icon.png"/> <span class="username"></span>. <a href="#" class="logout">Log&nbsp;out</a></p>
-						<!-- TEST
-						<p class="loggedin" id="sendmail">Send an email</p>
-						<p class="loggedin" id="destroy">Destroy user object</p>
-						-->
+			<h1>SHC Application Checklist <small>beta</small></h1>
+			<div class="row">
+				<div class="span5 left-column">
+					<div class="checker_message" style="display:none;">
+						<p class="loader" style="display:none;">loading...</p>
+						<p class="status loggedin">Completed <strong><span class="n_checked"></span></strong> of <strong><span class="n_checker"></span></strong> items</p>
+						<div class="fb">
+							<p class="anon"><a href="#" class="login label label-primary"><img src="static/images/small-facebook-icon.png"/> Log in with Facebook</a> and we will keep track of your progress.</p>
+							<p class="loggedin"><a href="#" class="logout label label-primary"><img src="static/images/small-facebook-icon.png"/> Log&nbsp;out</a> <span class="username"></span></p>
+							<!-- TEST
+							<p class="loggedin" id="sendmail">Send an email</p>
+							<p class="loggedin" id="destroy">Destroy user object</p>
+							-->
+						</div>
+					</div>
+					<div id="admiss_menu">
+						<h2>SHC Admissions</h2>
+						<div class="ajax well"></div>
 					</div>
 				</div>
-				<h2>SHC Admissions</h2>
-				<div id="admiss_menu" class="ajax"></div>
-			</div>
-			<div class="span7 right-column">
-				
-				<div class="inner">
+				<div class="span7 right-column">
 					
-					<p class="well">Follow these steps to becoming a student on "the Hill!"</p>
+					<div class="inner">
+						<p class="well">Follow these steps to becoming a student on "the Hill!"</p>
 
-					<h3 id="deposit" class="checker">Submit your Confirmation Deposit</h3>
-					<p>More description can go here if needed</p>
-					
-					<h3 id="visit" class="checker">Schedule a Campus Visit</h3>
-					<p>More description can go here if needed</p>
-					
-					<h3 id="badgerweb" class="checker">Log in to BadgerWeb</h3>
-					<p>More description can go here if needed</p>
-					
-					<h3 id="fafsa" class="checker">Complete the FAFSA</h3>
-					<p>More description can go here if needed</p>
-					
-					<h3 id="calendar" class="checker">Check out our calendar of upcoming campus events</h3>
-					<p>More description can go here if needed</p>
-					
-					<h3 id="housing" class="checker">Housing options</h3>
-					<p>More description can go here if needed</p>
-					
-					<h3 id="badger_connection" class="checker">Badger Connection</h3>
-					<p>More description can go here if needed</p>
-					
-					<h3 id="health_forms" class="checker">Submit Health Forms</h3>
-					<p>More description can go here if needed</p>
-					
-					<h3 id="fb" class="checker">SHC Class of 2017 Facebook page</h3>
-					<p>More description can go here if needed</p>
-					
-					<h3 id="other_social" class="checker">Follow on Twitter & Instagram</h3>
-					<p>More description can go here if needed</p>
-					
-					<h3 id="mobile" class="checker">Things to do in Mobile</h3>
-					<p>More description can go here if needed</p>
-					
-					<h3 id="recruiter" class="checker">Contact my personal SHC Recuiter</h3>
-					<p>More description can go here if needed</p>
+						<h3 id="deposit" class="checker">Submit your Confirmation Deposit</h3>
+						<p>More description can go here if needed</p>
+						
+						<h3 id="visit" class="checker">Schedule a Campus Visit</h3>
+						<p>More description can go here if needed</p>
+						
+						<h3 id="badgerweb" class="checker">Log in to BadgerWeb</h3>
+						<p>More description can go here if needed</p>
+						
+						<h3 id="fafsa" class="checker">Complete the FAFSA</h3>
+						<p>More description can go here if needed</p>
+						
+						<h3 id="calendar" class="checker">Check out our calendar of upcoming campus events</h3>
+						<p>More description can go here if needed</p>
+						
+						<h3 id="housing" class="checker">Housing options</h3>
+						<p>More description can go here if needed</p>
+						
+						<h3 id="badger_connection" class="checker">Badger Connection</h3>
+						<p>More description can go here if needed</p>
+						
+						<h3 id="health_forms" class="checker">Submit Health Forms</h3>
+						<p>More description can go here if needed</p>
+						
+						<h3 id="fb" class="checker">SHC Class of 2017 Facebook page</h3>
+						<p>More description can go here if needed</p>
+						
+						<h3 id="other_social" class="checker">Follow on Twitter & Instagram</h3>
+						<p>More description can go here if needed</p>
+						
+						<h3 id="mobile" class="checker">Things to do in Mobile</h3>
+						<p>More description can go here if needed</p>
+						
+						<h3 id="recruiter" class="checker">Contact my personal SHC Recuiter</h3>
+						<p>More description can go here if needed</p>
+					</div>
 				</div>
 			</div>
-		</div>
 		</div>
 	</section>
 	

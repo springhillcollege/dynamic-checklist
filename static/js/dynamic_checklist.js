@@ -130,6 +130,7 @@ ks.ready(function() {
                         $("#" + val + " .checker_item").closest(".checker").addClass("checked")
                     })
                     chklist = results
+                    check_complete()
                 }
                 show_message()
                 $(".checker_message .status").removeClass("checker_working")
@@ -262,18 +263,23 @@ ks.ready(function() {
         build_dummy_checkers(true)
     } // end else
     
-    
+    // load the menu partials cached from shc.edu
     $("#main-menu").load(remote_main_menu_url)
-    $("#admiss_menu").load(remote_admiss_menu_url, function() {
-		$(this).find("ul").addClass("nav nav-tabs nav-stacked")
+    $("#admiss_menu .ajax").load(remote_admiss_menu_url, function() {
+		// on load, clean up the menu to work with bootstrap
 		$(this).find('*').removeClass("active active-trail")
+		$(this).find("ul").addClass("nav nav-list")
+		// add submenus
 		$(this).find('.expanded').each(function() {
 			list = $(this)
 			list.addClass("dropdown")
 			list.find("a:first").addClass("dropdown-toggle").attr({'href':'#', 'data-toggle':'dropdown'}).append('<b class="caret"></b>')
 			list.find("ul").addClass('dropdown-menu')
 		})
-		//$('.dropdown-toggle').dropdown()
+		// set block title as menu title
+		var title = $("#admiss_menu h2")
+		$("#admiss_menu ul").first().prepend('<li class="nav-header">' + title.text() + '</li>')
+		title.remove()
 	})
     $("#footer .service_menu").load(remote_services_menu_url)
     $("#footer .social_menu").load(remote_social_menu_url)
