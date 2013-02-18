@@ -145,13 +145,12 @@ ks.ready(function() {
     var build_dummy_checkers = function(reset) {
         if (!reset) reset = false
         if (reset) {
-            // remove existing items and re-add them
+            // remove existing items
             $(".checker_item").remove()
-            checkers.each(function() {
-                make_checkbox($(this))
-            })
         }
-        checkers.removeClass("active").addClass("checked").find(".checker_item").unbind("click")
+        // ?? Marking anonymous checkboxes as "checked" was confusing
+        //checkers.removeClass("active").addClass("checked").find(".checker_item").unbind("click")
+        checkers.removeClass("active")
     }
 
 
@@ -235,7 +234,7 @@ ks.ready(function() {
     logout_link.click(function() {
         Parse.User.logOut()
         show_anon_msg()
-        build_dummy_checkers(false)
+        build_dummy_checkers(true)
         $.pnotify({
 			title: 'Bye',
 			text: 'You have successfully signed out.',
