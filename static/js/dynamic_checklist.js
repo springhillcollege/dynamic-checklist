@@ -6,7 +6,7 @@ Build and persist faux checkboxes
 
 // Facebook developer: https://developers.facebook.com/apps
 
-var page_partial_cache_url = "/assets/page-partials/"
+var page_partial_cache_url = "https://www.shc.edu/assets/page-partials/"
 
 var remote_main_menu_url = page_partial_cache_url + "remote_menu.main.inner.html"
 var remote_admiss_menu_url = page_partial_cache_url + "remote_menu.secondary.admiss.how_to_apply.html"
