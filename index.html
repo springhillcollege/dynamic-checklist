@@ -91,15 +91,17 @@
 				<div class="span5 left-column">
 					<div class="checker_message" style="display:none;">
 						<p class="loader" style="display:none;">loading...</p>
+						<p class="anon"><a href="#" class="login btn btn-info btn-small"><img src="static/images/small-facebook-icon.png"/> Log in with Facebook</a> and we will keep track of your progress.</p>
+						<p class="loggedin"><span class="username lead"></span><a href="#" class="logout btn btn-info btn-small"><img src="static/images/small-facebook-icon.png"/> Log&nbsp;out</a></p>
 						<p class="status loggedin">Completed <strong><span class="n_checked"></span></strong> of <strong><span class="n_checker"></span></strong> items</p>
-						<div class="fb">
-							<p class="anon"><a href="#" class="login label label-primary"><img src="static/images/small-facebook-icon.png"/> Log in with Facebook</a> and we will keep track of your progress.</p>
-							<p class="loggedin"><a href="#" class="logout label label-primary"><img src="static/images/small-facebook-icon.png"/> Log&nbsp;out</a> <span class="username"></span></p>
-							<!-- TEST
-							<p class="loggedin" id="sendmail">Send an email</p>
-							<p class="loggedin" id="destroy">Destroy user object</p>
-							-->
+						<!--<p><a class="share loggedin label label-primary" href="#">Share on Facebook</a></p>-->
+						<div class="loggedin">
+							<fb:like send="true" width="450" show_faces="true" />
 						</div>
+						<!-- TEST
+						<p class="loggedin" id="sendmail">Send an email</p>
+						<p class="loggedin" id="destroy">Destroy user object</p>
+						-->
 					</div>
 					<div id="admiss_menu">
 						<h2>SHC Admissions</h2>

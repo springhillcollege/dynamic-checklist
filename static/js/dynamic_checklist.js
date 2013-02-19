@@ -6,6 +6,7 @@ Build and persist faux checkboxes
 
 // Facebook developer: https://developers.facebook.com/apps
 
+var this_url = "https://www.shc.edu/sandbox/dynamic-checklist/"
 var page_partial_cache_url = "https://www.shc.edu/assets/page-partials/"
 
 var remote_main_menu_url = page_partial_cache_url + "remote_menu.main.inner.html"
@@ -157,8 +158,8 @@ ks.ready(function() {
 
     var checkers = $(".checker")
     var message_area = $(".checker_message")
-    var login_link = $(".fb a.login")
-    var logout_link = $(".fb a.logout")
+    var login_link = $("a.login")
+    var logout_link = $("a.logout")
     var currentUser = Parse.User.current()
     
     // TEST
@@ -283,5 +284,29 @@ ks.ready(function() {
     $("#footer .service_menu").load(remote_services_menu_url)
     $("#footer .social_menu").load(remote_social_menu_url)
     
+    $('.share').click(function(){
+		FB.ui(
+			{
+				method: 'feed',
+				name: "I'm using the Spring Hill College Application Checklist",
+				description: (
+					'A quick and easy way to track your progress in the online admission process ' +
+					'for Spring Hill College.'
+				),
+				link: this_url,
+				picture: 'http://www.shc.edu/media/common/SHC_crest-100x100.png'
+			},
+			function(response) {
+				if (response && response.post_id) {
+					alert('Post was published.')
+				} else {
+					alert('Post was not published.')
+				}
+			}
+		)
+		return false
+	})
+
+
 });
 
