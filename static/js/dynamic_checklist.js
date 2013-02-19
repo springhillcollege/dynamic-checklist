@@ -1,12 +1,13 @@
 /*
 
-Build and persist faux checkboxes 
+Build and persist checkboxes 
     
 */
 
 // Facebook developer: https://developers.facebook.com/apps
 
 var this_url = "https://www.shc.edu/sandbox/dynamic-checklist/"
+var this_url_tracker = this_url + "?utm_source=facebook&utm_medium=online&utm_campaign=you_gotta_see_this"
 var page_partial_cache_url = "https://www.shc.edu/assets/page-partials/"
 
 var remote_main_menu_url = page_partial_cache_url + "remote_menu.main.inner.html"
@@ -293,7 +294,7 @@ ks.ready(function() {
 					'A quick and easy way to track your progress in the online admission process ' +
 					'for Spring Hill College.'
 				),
-				link: this_url,
+				link: this_url_tracker,
 				picture: 'http://www.shc.edu/media/common/SHC_crest-100x100.png'
 			},
 			function(response) {
@@ -306,7 +307,6 @@ ks.ready(function() {
 		)
 		return false
 	})
-
 
 });
 
