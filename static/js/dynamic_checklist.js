@@ -249,21 +249,14 @@ ks.ready(function() {
     
     // TEST
     $('#sendmail').on('click', function() {
-        Parse.Cloud.run('sendmail', {
-									'admin_user_name': admin_user_name,
-									'admin_user_email': admin_user_email,
-									'username': currentUser.get('name'),
-									'email': currentUser.get('email')
-									}, {
-            success: function(result) {
-              // succeed and/or fail silently
-              //alert("yep: " + result)
-            }, // end success
-            error: function(error) {
-                //alert("nope: " + error)
-            } // end error
-        });
-    })
+        Parse.Cloud.run('sendmail_admin_new_user_reg', {
+				'admin_user_name': admin_user_name,
+				'admin_user_email': admin_user_email,
+				'username': currentUser.get('name'),
+				'email': currentUser.get('email')
+			},
+			{});
+		})
     
     login_link.on('click', function() {
         do_login()
