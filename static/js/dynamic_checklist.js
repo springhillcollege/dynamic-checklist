@@ -15,6 +15,12 @@ var remote_admiss_menu_url = page_partial_cache_url + "remote_menu.secondary.adm
 var remote_services_menu_url = page_partial_cache_url + "remote_menu.services.html"
 var remote_social_menu_url = page_partial_cache_url + "remote_menu.social.html"
 
+var admin_user_name = "SHC Admissions"
+//var admin_user_email = "web_admiss@shc.edu"
+var admin_user_email = "chughes@shc.edu"
+
+var currentUser = null
+
 ks.ready(function() {
 
     /* TODO
@@ -26,6 +32,13 @@ ks.ready(function() {
      *
      * Provide opt-out method!
      * */
+    
+    //var user = {
+		//'logged_in': false,
+		//'_id': null,
+		//'name': 'Anonymous',
+		//'email': null
+	//}
 
     var do_checker = function() {
         return window.JSON && window.JSON.parse;
@@ -77,6 +90,12 @@ ks.ready(function() {
         // ensure we start with a clean slate
         $(".checker_item").remove()
         checkers.removeClass("checked").addClass("active")
+        checkers.off('click')
+
+	// TODO
+	/* set all checkboxes as unchecked for anonymous users 
+	 * bind "click" with popup message that user needs to login
+	 */
 
         // configure all of the active checker items
         checkers.each(function() {
@@ -84,7 +103,7 @@ ks.ready(function() {
             make_checkbox(checker)
             var checker_item = checker.find(".checker_item")
             // add active class as a styling hook
-            checker_item.click(function() {
+            checker_item.on('click', function() {
                 // add or remove the id of this item from storage
                 checker_item.addClass("checker_working")
                 if (checker.hasClass("checked")) {
@@ -144,53 +163,35 @@ ks.ready(function() {
         })
     }
     
-    var build_dummy_checkers = function(reset) {
-        if (!reset) reset = false
-        if (reset) {
-            // remove existing items
-            $(".checker_item").remove()
-        }
+    var build_dummy_checkers = function() {
+        // remove existing checkbox items
+        $(".checker_item").remove()
+        // reset classes and event handlers on checker items
+        checkers.off('click')
+        checkers.removeClass('checked')
+        checkers.addClass('active')
+        checkers.each(function() {
+            make_checkbox($(this))
+            $(this).find(".checker_item").on('click', function() {
+				$.pnotify({
+					title: 'You need to log in with Facebook',
+					text: 'so we can keep track of your progress',
+					type: 'info',
+				})
+				do_login()
+			})
+        })
         // ?? Marking anonymous checkboxes as "checked" was confusing
         //checkers.removeClass("active").addClass("checked").find(".checker_item").unbind("click")
-        checkers.removeClass("active")
+        //checkers.removeClass("active")
     }
-
-
-
-    var checkers = $(".checker")
-    var message_area = $(".checker_message")
-    var login_link = $("a.login")
-    var logout_link = $("a.logout")
-    var currentUser = Parse.User.current()
     
-    // TEST
-    $('#destroy').click(function() {
-        currentUser.destroy({
-            success: function(obj) {
-                alert("destroyed!")
-            }
-        })
-    })
-    
-    // TEST
-    $('#sendmail').click(function() {
-        Parse.Cloud.run('sendmail', {'username': currentUser.get('username')}, {
-            success: function(result) {
-              // succeed and/or fail silently
-              //alert("yep: " + result)
-            }, // end success
-            error: function(error) {
-                //alert("nope: " + error)
-            } // end error
-        });
-    })
-    
-    login_link.click(function() {
-        Parse.FacebookUtils.logIn("email", {
+    var do_login = function() {
+		Parse.FacebookUtils.logIn("email", {
             success: function(user) {
                 currentUser = user
                 build_checkers()
-                //console.log(currentUser)
+                console.log(currentUser)
                 if (!currentUser.existed()) {
                     // grab and save fb user name and email
                     FB.api('/me', function(response) {
@@ -199,17 +200,15 @@ ks.ready(function() {
                         currentUser.set("login_source","fb")
                         currentUser.save(null, {
                             success: function() {
-                                // TEST
-                                //alert('You logged in through ' + currentUser.get('login_source') + '. Your FB info is ' + currentUser.get('name') + ": " + currentUser.get('email'));
+                                // User signed up and logged in through Facebook
+								$.pnotify({
+									title: 'Hi ' + currentUser.get('name'),
+									text: 'You have successfully registered through Facebook.',
+									type: 'info',
+								})
                             }
                         })
                     });
-                    // User signed up and logged in through Facebook
-                    $.pnotify({
-						title: 'Hi ' + currentUser.get('name'),
-						text: 'You have successfully registered through Facebook.',
-						type: 'info',
-					})
                     
                 } else {
 					// User logged in through Facebook
@@ -230,13 +229,51 @@ ks.ready(function() {
 				})
             }
         });
-        return false;
+	}
+
+
+    var checkers = $(".checker")
+    var message_area = $(".checker_message")
+    var login_link = $("a.login")
+    var logout_link = $("a.logout")
+    var currentUser = Parse.User.current()
+    
+    // TEST
+    $('#destroy').on('click', function() {
+        currentUser.destroy({
+            success: function(obj) {
+                alert("destroyed!")
+            }
+        })
     })
     
-    logout_link.click(function() {
+    // TEST
+    $('#sendmail').on('click', function() {
+        Parse.Cloud.run('sendmail', {
+									'admin_user_name': admin_user_name,
+									'admin_user_email': admin_user_email,
+									'username': currentUser.get('name'),
+									'email': currentUser.get('email')
+									}, {
+            success: function(result) {
+              // succeed and/or fail silently
+              //alert("yep: " + result)
+            }, // end success
+            error: function(error) {
+                //alert("nope: " + error)
+            } // end error
+        });
+    })
+    
+    login_link.on('click', function() {
+        do_login()
+        return false
+    })
+    
+    logout_link.on('click', function() {
         Parse.User.logOut()
         show_anon_msg()
-        build_dummy_checkers(true)
+        build_dummy_checkers()
         $.pnotify({
 			title: 'Bye',
 			text: 'You have successfully signed out.',
@@ -254,14 +291,14 @@ ks.ready(function() {
     
     // user is not logged in
     else if (do_checker) {
-        build_dummy_checkers(true)
+        build_dummy_checkers()
         show_anon_msg()
         show_message()
     }
     
     // in older browsers, just create completed checkboxes
     else {
-        build_dummy_checkers(true)
+        build_dummy_checkers()
     } // end else
     
     // load the menu partials cached from shc.edu
@@ -285,7 +322,7 @@ ks.ready(function() {
     $("#footer .service_menu").load(remote_services_menu_url)
     $("#footer .social_menu").load(remote_social_menu_url)
     
-    $('.share').click(function(){
+    $('.share').on('click', function(){
 		FB.ui(
 			{
 				method: 'feed',
