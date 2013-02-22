@@ -23,33 +23,19 @@ var currentUser = null
 
 ks.ready(function() {
 
-    /* TODO
-     * Build user class to have available throughout code
-     *
-     * Grab email from Facebook
-     *
-     * Send email from cloudcode to new registrants
-     *
-     * Provide opt-out method!
-     * */
-    
-    //var user = {
-		//'logged_in': false,
-		//'_id': null,
-		//'name': 'Anonymous',
-		//'email': null
-	//}
-
     var do_checker = function() {
+        // can the browser handle it?
         return window.JSON && window.JSON.parse;
     }
 
     var make_checkbox = function(context) {
+		// add a checkbox item to each checker
         context.prepend('<span class="checker_item"></span>') //add the "checkbox"
         context.find(".checker_item").css("height", context.css("height"));
     }
 
     var show_message = function() {
+		// gather data about checkboxes and update status
         if (message_area.length >= 1) {
             $(".n_checked").html($(".checked").length)
             $(".n_checker").html($(".checker").length)
@@ -61,16 +47,19 @@ ks.ready(function() {
     }
     
     var show_anon_msg = function() {
+        // only display messages designed for anon users
         $(".anon").show();
         $(".loggedin").hide();
     }
     
     var show_loggedin_msg = function() {
+		// only display the messages designed for logged in
         $(".anon").hide();
         $(".loggedin").show();
     }
     
     var check_complete = function() {
+		// show message if all checkboxes are checked
 		if (checkers.length == $('.checker.checked').length) {
 			$.pnotify({
 				title: 'All done!',
@@ -81,9 +70,9 @@ ks.ready(function() {
 	}
     
     var build_checkers = function() {
+		// build our checklist
         var chklist = null
         var checked = []
-        var dummy_id = "XRF1";
         
         var ApplicationChecklist = Parse.Object.extend("ApplicationChecklist")
         
@@ -92,11 +81,6 @@ ks.ready(function() {
         checkers.removeClass("checked").addClass("active")
         checkers.off('click')
 
-	// TODO
-	/* set all checkboxes as unchecked for anonymous users 
-	 * bind "click" with popup message that user needs to login
-	 */
-
         // configure all of the active checker items
         checkers.each(function() {
             var checker = $(this)
@@ -104,16 +88,15 @@ ks.ready(function() {
             var checker_item = checker.find(".checker_item")
             // add active class as a styling hook
             checker_item.on('click', function() {
-                // add or remove the id of this item from storage
                 checker_item.addClass("checker_working")
+                // add or remove the id of this item from storage
                 if (checker.hasClass("checked")) {
                     chklist.remove("checked", checker.attr("id"))
-                    //console.log(checker + " checked")
                 }
                 else {
                     chklist.addUnique("checked", checker.attr("id"))
-                    //console.log(checker + " not checked")
                 }
+                // save data to Parse
                 chklist.save({
                     success: function(object) {
                         checker.toggleClass("checked");
@@ -128,25 +111,24 @@ ks.ready(function() {
             })
         })
 
-        // Grab initial data if available
+        // show that we are working on something
+        $(".checker_message .status").addClass("checker_working")
+		// Grab initial data if available
         var query = new Parse.Query("ApplicationChecklist")
         query.equalTo("user", currentUser)
-        
-        $(".checker_message .status").addClass("checker_working")
         
         query.first({
             success: function(results) {
                 if (!results) {
                     // no data for this user, create some
-                    //console.log("data not found")
                     chklist = new ApplicationChecklist()
                     chklist.set("user", currentUser)
-                    // only allow access for the current user
+                    // only allow access to this data for the current user
                     chklist.setACL(new Parse.ACL(Parse.User.current()));
                 }
                 else {
+					// if we have data, use it!
                     var checked = results.get("checked")
-                    //console.log("data: " + checked)
                     $.each(checked, function(i, val) {
                         $("#" + val + " .checker_item").closest(".checker").addClass("checked")
                     })
@@ -170,6 +152,7 @@ ks.ready(function() {
         checkers.off('click')
         checkers.removeClass('checked')
         checkers.addClass('active')
+        // add checkboxes and bind login message
         checkers.each(function() {
             make_checkbox($(this))
             $(this).find(".checker_item").on('click', function() {
@@ -181,9 +164,6 @@ ks.ready(function() {
 				do_login()
 			})
         })
-        // ?? Marking anonymous checkboxes as "checked" was confusing
-        //checkers.removeClass("active").addClass("checked").find(".checker_item").unbind("click")
-        //checkers.removeClass("active")
     }
     
     var do_login = function() {
@@ -206,6 +186,7 @@ ks.ready(function() {
 									text: 'You have successfully registered through Facebook.',
 									type: 'info',
 								})
+								send_email_on_new_user_reg()
                             }
                         })
                     });
@@ -230,6 +211,17 @@ ks.ready(function() {
             }
         });
 	}
+	
+	var send_email_on_new_user_reg = function() {
+		// Let someone know we have a new user registration
+		Parse.Cloud.run('sendmail_admin_new_user_reg', {
+				'admin_user_name': admin_user_name,
+				'admin_user_email': admin_user_email,
+				'username': currentUser.get('name'),
+				'email': currentUser.get('email')
+		},
+		{});
+	}
 
 
     var checkers = $(".checker")
@@ -239,30 +231,24 @@ ks.ready(function() {
     var currentUser = Parse.User.current()
     
     // TEST
-    $('#destroy').on('click', function() {
-        currentUser.destroy({
-            success: function(obj) {
-                alert("destroyed!")
-            }
-        })
-    })
+    //$('#destroy').on('click', function() {
+        //currentUser.destroy({
+            //success: function(obj) {
+                //alert("destroyed!")
+            //}
+        //})
+    //})
     
-    // TEST
-    $('#sendmail').on('click', function() {
-        Parse.Cloud.run('sendmail_admin_new_user_reg', {
-				'admin_user_name': admin_user_name,
-				'admin_user_email': admin_user_email,
-				'username': currentUser.get('name'),
-				'email': currentUser.get('email')
-			},
-			{});
-		})
+    //// TEST
+    //$('#sendmail').on('click', function() {
+        //send_email_on_new_user_reg()
+	//})
     
+    // bind login and buttons
     login_link.on('click', function() {
         do_login()
         return false
     })
-    
     logout_link.on('click', function() {
         Parse.User.logOut()
         show_anon_msg()
@@ -289,7 +275,7 @@ ks.ready(function() {
         show_message()
     }
     
-    // in older browsers, just create completed checkboxes
+    // in older browsers, just create empty checkboxes
     else {
         build_dummy_checkers()
     } // end else
@@ -315,28 +301,28 @@ ks.ready(function() {
     $("#footer .service_menu").load(remote_services_menu_url)
     $("#footer .social_menu").load(remote_social_menu_url)
     
-    $('.share').on('click', function(){
-		FB.ui(
-			{
-				method: 'feed',
-				name: "I'm using the Spring Hill College Application Checklist",
-				description: (
-					'A quick and easy way to track your progress in the online admission process ' +
-					'for Spring Hill College.'
-				),
-				link: this_url_tracker,
-				picture: 'http://www.shc.edu/media/common/SHC_crest-100x100.png'
-			},
-			function(response) {
-				if (response && response.post_id) {
-					alert('Post was published.')
-				} else {
-					alert('Post was not published.')
-				}
-			}
-		)
-		return false
-	})
+    //$('.share').on('click', function(){
+		//FB.ui(
+			//{
+				//method: 'feed',
+				//name: "I'm using the Spring Hill College Application Checklist",
+				//description: (
+					//'A quick and easy way to track your progress in the online admission process ' +
+					//'for Spring Hill College.'
+				//),
+				//link: this_url_tracker,
+				//picture: 'http://www.shc.edu/media/common/SHC_crest-100x100.png'
+			//},
+			//function(response) {
+				//if (response && response.post_id) {
+					//alert('Post was published.')
+				//} else {
+					//alert('Post was not published.')
+				//}
+			//}
+		//)
+		//return false
+	//})
 
 });
 
