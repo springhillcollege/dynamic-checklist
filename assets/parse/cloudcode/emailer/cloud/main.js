@@ -4,14 +4,17 @@ Parse.Cloud.define("sendmail_admin_new_user_reg", function(request, response) {
   
 	mandrill.sendEmail({
 		message: {
-			text: "Hello World!",
-			subject: "New user registered via Facebook!",
+			html: "<p>A new user registered for the SHC Admissions Checklist</p>" +
+				"<ul><li>FB name: " + request.params.username + "</li>" +
+				"<li>FB email: " + request.params.email + "</li></ul>" +
+				"<p>Please remember to use this information with discretion</p>",
+			subject: "SHC Admissions Application Checklist - new user",
 			from_email: "noreply@shc.edu",
-			from_name: "SHC Online Application Checklist",
+			from_name: "SHC Web Services",
 			to: [
 					{
-						email: "chughes@shc.edu",
-						name: "Chris"
+						email: request.params.admin_user_email,
+						name: request.params.admin_user_name
 					}
 				]
 		},
@@ -26,7 +29,5 @@ Parse.Cloud.define("sendmail_admin_new_user_reg", function(request, response) {
 				response.error("Whoops!");
 			}
 	}); // end sendmail
-	
-	
   
 });
