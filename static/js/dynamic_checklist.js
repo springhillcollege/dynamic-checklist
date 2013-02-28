@@ -230,6 +230,9 @@ ks.ready(function() {
     var logout_link = $("a.logout")
     var currentUser = Parse.User.current()
     
+    // set a shorter pines notify default delay
+    $.pnotify.defaults.delay = 3000;
+    
     // TEST
     //$('#destroy').on('click', function() {
         //currentUser.destroy({
@@ -243,6 +246,10 @@ ks.ready(function() {
     //$('#sendmail').on('click', function() {
         //send_email_on_new_user_reg()
 	//})
+	
+	// prettify link buttons
+	$('.content a.btn').append('&nbsp;<i class="icon-chevron-right"></i>')
+	$('.content a.btn-info i').addClass('icon-white')
     
     // bind login and buttons
     login_link.on('click', function() {
@@ -256,7 +263,7 @@ ks.ready(function() {
         $.pnotify({
 			title: 'Bye',
 			text: 'You have successfully signed out.',
-			type: 'info',
+			type: 'info'
 		})
         return false
     })

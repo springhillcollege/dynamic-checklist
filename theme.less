@@ -72,6 +72,17 @@ h4 {
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5f1d89', endColorstr='#42145f',GradientType=0 ); /* IE6-9 */
 }
 
+.foot-gradient() {
+	background: #707070; /* Old browsers */
+	background: -moz-linear-gradient(top,  #707070 0%, #636363 43%, #555555 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#707070), color-stop(43%,#636363), color-stop(100%,#555555)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #707070 0%,#636363 43%,#555555 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #707070 0%,#636363 43%,#555555 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #707070 0%,#636363 43%,#555555 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #707070 0%,#636363 43%,#555555 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#707070', endColorstr='#555555',GradientType=0 ); /* IE6-9 */
+}
+
 .box-transition() {
 	-webkit-transition: height .4s linear;
 	-moz-transition: height .4s linear;
@@ -134,12 +145,6 @@ body {
 	}
 }
 
-/*
- * #admiss_menu ul ul {
-	display: none; 
-}
-*/
-
 .username.lead {
 	margin-right: 10px;
 }
@@ -149,7 +154,7 @@ body {
 }
 
 #footer {
-	background: @highlightColor;
+	.foot-gradient();
 	height: auto;
 	min-height: 4em;
 	padding: 20px;
@@ -161,7 +166,7 @@ body {
 	}
 	.service_menu {
 		text-align: right;
-		border-right: 1px solid @highlightColor2;
+		border-right: 1px solid #aaa;
 		padding-right: 30px;
 	}
 	.social_menu {
@@ -231,6 +236,35 @@ body {
     height: 1px;
     overflow: hidden;
     position: absolute !important;
+}
+
+.text-center {
+	text-align: center;
+}
+
+.getkickstrap {
+	margin-top: 20px;
+	color: #FFF;
+}
+
+/* 
+Make the Facebook Like box responsive (fluid width)
+https://developers.facebook.com/docs/reference/plugins/like-box/ 
+*/
+
+/* 
+This element holds injected scripts inside iframes that in 
+some cases may stretch layouts. So, we're just hiding it. 
+*/
+
+#fb-root {
+    display: none;
+}
+
+/* To fill the container and nothing else */
+
+.fb_iframe_widget, .fb_iframe_widget span, .fb_iframe_widget span iframe[style] {
+    width: 100% !important;
 }
 
 @media (min-width: 1200px) {
