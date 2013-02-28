@@ -158,10 +158,11 @@ ks.ready(function() {
             $(this).find(".checker_item").on('click', function() {
 				$.pnotify({
 					title: 'You need to log in with Facebook',
-					text: 'so we can keep track of your progress',
+					text: 'so we can keep track of your progress.<br><a href="#" class="login btn">Login now</a><br><small>There&lsquo;s also a login link in the sidebar',
 					type: 'info',
+					hide: false // this one is important, so make it sticky
 				})
-				do_login()
+				//do_login()
 			})
         })
     }
@@ -252,7 +253,7 @@ ks.ready(function() {
 	$('.content a.btn-info i').addClass('icon-white')
     
     // bind login and buttons
-    login_link.on('click', function() {
+    $('body').on('click', '.login', function() {
         do_login()
         return false
     })
