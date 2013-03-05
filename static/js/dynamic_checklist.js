@@ -156,7 +156,7 @@ ks.ready(function() {
         checkers.each(function() {
             make_checkbox($(this))
             $(this).find(".checker_item").on('click', function() {
-				$.pnotify({
+				permanotice_login = $.pnotify({
 					title: 'You need to log in with Facebook',
 					text: 'so we can keep track of your progress.<br><a href="#" class="login btn">Login now</a><br><small>There&lsquo;s also a login link in the sidebar',
 					type: 'info',
@@ -170,6 +170,7 @@ ks.ready(function() {
     var do_login = function() {
 		Parse.FacebookUtils.logIn("email", {
             success: function(user) {
+                if (permanotice_login.pnotify_remove) permanotice_login.pnotify_remove();
                 currentUser = user
                 build_checkers()
                 console.log(currentUser)
