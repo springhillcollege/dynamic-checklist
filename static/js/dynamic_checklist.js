@@ -31,8 +31,8 @@ ks.ready(function() {
 
     var make_checkbox = function(context) {
 		// add a checkbox item to each checker
-        context.prepend('<span class="checker_item"></span>') //add the "checkbox"
-        context.find(".checker_item").css("height", context.css("height"));
+        context.prepend('<span class="checkbox"></span>') //add the "checkbox"
+        context.find(".checkbox").css("height", context.css("height"));
     }
 
     var show_message = function() {
@@ -78,7 +78,7 @@ ks.ready(function() {
         var ApplicationChecklist = Parse.Object.extend("ApplicationChecklist")
         
         // ensure we start with a clean slate
-        $(".checker_item").remove()
+        $(".checkbox").remove()
         checkers.removeClass("checked").addClass("active")
         checkers.off('click')
 
@@ -86,10 +86,10 @@ ks.ready(function() {
         checkers.each(function() {
             var checker = $(this)
             make_checkbox(checker)
-            var checker_item = checker.find(".checker_item")
+            var checkbox = checker.find(".checkbox")
             // add active class as a styling hook
-            checker_item.on('click', function() {
-                checker_item.addClass("checker_working")
+            checkbox.on('click', function() {
+                checkbox.addClass("checker_working")
                 // add or remove the id of this item from storage
                 if (checker.hasClass("checked")) {
                     chklist.remove("checked", checker.attr("id"))
@@ -102,7 +102,7 @@ ks.ready(function() {
                     success: function(object) {
                         checker.toggleClass("checked");
                         show_message()
-                        checker_item.removeClass("checker_working")
+                        checkbox.removeClass("checker_working")
                         check_complete()
                     },
                     error: function(model, error) {
@@ -131,7 +131,7 @@ ks.ready(function() {
 					// if we have data, use it!
                     var checked = results.get("checked")
                     $.each(checked, function(i, val) {
-                        $("#" + val + " .checker_item").closest(".checker").addClass("checked")
+                        $("#" + val + " .checkbox").closest(".checker").addClass("checked")
                     })
                     chklist = results
                     check_complete()
@@ -148,7 +148,7 @@ ks.ready(function() {
     
     var build_dummy_checkers = function() {
         // remove existing checkbox items
-        $(".checker_item").remove()
+        $(".checkbox").remove()
         // reset classes and event handlers on checker items
         checkers.off('click')
         checkers.removeClass('checked')
@@ -156,7 +156,7 @@ ks.ready(function() {
         // add checkboxes and bind login message
         checkers.each(function() {
             make_checkbox($(this))
-            $(this).find(".checker_item").on('click', function() {
+            $(this).find(".checkbox").on('click', function() {
 				permanotice_login = $.pnotify({
 					title: 'You need to log in with Facebook',
 					text: 'so we can keep track of your progress.<br><a href="#" class="login btn">Login now</a><br><small>There&lsquo;s also a login link in the sidebar',
@@ -255,7 +255,7 @@ ks.ready(function() {
 	//~ })
 	
 	// prettify link buttons
-	$('.content a.btn').append('&nbsp;<i class="icon-chevron-right"></i>')
+	$('.checklist a.btn').append('&nbsp;<i class="icon-chevron-right"></i>')
 	$('.content a.btn-info i').addClass('icon-white')
     
     // bind login and buttons

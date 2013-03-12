@@ -18,6 +18,7 @@
   <link rel="stylesheet/less" type="text/css" href="kickstrap.less">
   <script src="Kickstrap/js/less-1.3.0.min.js"></script>
 -->
+  
   <script type="text/javascript" src="https://www.parsecdn.com/js/parse-1.1.15.min.js"></script>
   <!--[if IE]><script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 </head>
@@ -90,7 +91,7 @@
 				<div class="span5 left-column">
 					<div class="checker_message" style="display:none;">
 						<p class="loader" style="display:none;">loading...</p>
-						<p class="anon"><a href="#" class="login btn btn-info btn-small"><img src="static/images/small-facebook-icon.png"/> Log in with Facebook</a> and we will keep track of your progress.</p>
+						<p class="anon"><a href="#" class="login btn btn-small"><img src="static/images/small-facebook-icon.png"/> Log in with Facebook</a> and we will keep track of your progress.</p>
 						<p class="loggedin"><span class="username lead"></span><a href="#" class="logout btn btn-info btn-small"><img src="static/images/small-facebook-icon.png"/> Log&nbsp;out</a></p>
 						<p class="status loggedin">Completed <strong><span class="n_checked"></span></strong> of <strong><span class="n_checker"></span></strong> items</p>
 						<!--<p><a class="share loggedin label label-primary" href="#">Share on Facebook</a></p>-->
@@ -113,66 +114,95 @@
 				</div>
 				<div class="span7 right-column">
 					
-					<div class="inner">
+					<div class="inner checklist">
 						<p class="well">Follow these steps to becoming a student on "the Hill!"</p>
 
-						<h3 id="deposit" class="checker">Submit your Confirmation Deposit</h3>
-						<p>Say "Yes" to joining the best college community in the South with your enrollment deposit. As a resident student, your deposit of $350 reserves residential housing space for you and a place in the class, as well as, ensures you will receive summer orientation information. A commuter deposit of $200 reserves a place for you in the class and ensures you will receive summer orientation information.</p>
+						<div class="checker-item">
+							<h3 id="deposit" class="checker">Submit your Confirmation Deposit</h3>
+							<p>Say "Yes" to joining the best college community in the South with your enrollment deposit. As a resident student, your deposit of $350 reserves residential housing space for you and a place in the class, as well as, ensures you will receive summer orientation information. A commuter deposit of $200 reserves a place for you in the class and ensures you will receive summer orientation information.</p>
+							
+							<p><a href="https://shc.afford.com/PayNow" class="btn btn-small">Make your deposit online today</a></p>
+							
+							<p><small>Spring Hill College uses the afford.com online payment system.</small></p>
+						</div>
 						
-						<p><a href="https://shc.afford.com/PayNow" class="btn btn-small">Make your deposit online today</a></p>
+						<div class="checker-item">
+							<h3 id="visit" class="checker">Schedule a Campus Visit</h3>
+							<p>If you haven't already, you need to schedule your visit to the Hill! Our 380-acre campus is one of the most picturesque you will find. You can choose a Senior Select Visit Day or a private visit. Dates for the Visit Days are available on the calendar to the right.</p>
+							<p>
+							<a class="btn btn-small" href="/visit">Schedule a visit now</a>
+							</p>
+						</div>
 						
-						<p><small>Spring Hill College uses the afford.com online payment system.</small></p>
+						<div class="checker-item">	
+							<h3 id="badgerweb" class="checker">Log in to BadgerWeb</h3>
+							<p>BadgerWeb is our information hub for students, faculty, and staff. Once you have made your deposit, it will become your primary source for information about Spring Hill. You will receive a username and password when your BadgerWeb account has been created.</p>
+							<p>
+							<a class="btn btn-small" href="http://badgerweb.shc.edu">Log in to BadgerWeb</a>
+							</p>
+						</div>
 						
-						<h3 id="visit" class="checker">Schedule a Campus Visit</h3>
-						<p>If you haven't already, you need to schedule your visit to the Hill! Our 380-acre campus is one of the most picturesque you will find. You can choose a Senior Select Visit Day or a private visit. Dates for the Visit Days are available on the calendar to the right.</p>
-						<p>
-						<a class="btn btn-small" href="/visit">Schedule a visit now</a>
-						</p>
+						<div class="checker-item">	
+							<h3 id="testscores" class="checker">Submit Your Test Scores</h3>
+							<p>Be sure to send any additional ACT or SAT scores you receive. With an increase in score, we will look to see if you are eligible for any additional scholarships.</p>
+						</div>
 						
-						<h3 id="badgerweb" class="checker">Log in to BadgerWeb</h3>
-						<p>BadgerWeb is our information hub for students, faculty, and staff. Once you have made your deposit, it will become your primary source for information about Spring Hill. You will receive a username and password when your BadgerWeb account has been created.</p>
-						<p>
-						<a class="btn btn-small" href="http://badgerweb.shc.edu">Log in to BadgerWeb</a>
-						</p>
+						<div class="checker-item">	
+							<h3 id="fafsa" class="checker">Complete the FAFSA</h3>
+							<p>Once you enter the Spring of your Senior Year, you need to file the FAFSA. The Free Application for Federal Student Aid (FAFSA) will help our Financial Aid Office determine if you are eligible for any additional funding to help make Spring Hill College more affordable for you and your family.</p>
+							<p>
+							<a class="btn btn-small" href="http://www.fafsa.ed.gov">Submit your FAFSA online</a>
+							</p>
+						</div>
 						
-						<h3 id="testscores" class="checker">Submit Your Test Scores</h3>
-						<p>Be sure to send any additional ACT or SAT scores you receive. With an increase in score, we will look to see if you are eligible for any additional scholarships.</p>
+						<div class="checker-item">	
+							<h3 id="calendar" class="checker">Check out our calendar of upcoming campus events</h3>
+							<p>TODO!!!!! More description can go here if needed</p>
+						</div>
 						
-						<h3 id="fafsa" class="checker">Complete the FAFSA</h3>
-						<p>Once you enter the Spring of your Senior Year, you need to file the FAFSA. The Free Application for Federal Student Aid (FAFSA) will help our Financial Aid Office determine if you are eligible for any additional funding to help make Spring Hill College more affordable for you and your family.</p>
-						<p>
-						<a class="btn btn-small" href="http://www.fafsa.ed.gov">Submit your FAFSA online</a>
-						</p>
+						<div class="checker-item">	
+							<h3 id="housing" class="checker">Housing options</h3>
+							<p>Read the Terms and Conditions and return the Housing Contract to ensure your place on our beautiful campus.</p>
+	<!--
+							<p class="btn-group btn-group-vertical">
+	-->
+								<p><a class="btn btn-small" href="/sites/default/files/Housing Terms and Conditions 2013-14.pdf">Download Housing Terms and Conditions 2013-14</a></p>
+								<p><a class="btn btn-small" href="/sites/default/files/New Student Housing Contract 2013-2014.pdf">Download New Student Housing Contract 2013-2014</a></p>
+	<!--
+							</p>
+	-->
+						</div>
 						
-						<h3 id="calendar" class="checker">Check out our calendar of upcoming campus events</h3>
-						<p>TODO!!!!! More description can go here if needed</p>
+						<div class="checker-item">
+							<h3 id="badger_connection" class="checker">Badger Connection</h3>
+							<p>TODO!!!!! More description can go here if needed</p>
+						</div>
 						
-						<h3 id="housing" class="checker">Housing options</h3>
-						<p>Read the Terms and Conditions and return the Housing Contract to ensure your place on our beautiful campus.</p>
-						<p class="btn-group btn-group-vertical">
-							<a class="btn btn-small" href="/sites/default/files/Housing Terms and Conditions 2013-14.pdf">Download Housing Terms and Conditions 2013-14</a>
-							<a class="btn btn-small" href="/sites/default/files/New Student Housing Contract 2013-2014.pdf">Download New Student Housing Contract 2013-2014</a>
-						</p>
-						<h3 id="badger_connection" class="checker">Badger Connection</h3>
-						<p>TODO!!!!! More description can go here if needed</p>
+						<div class="checker-item">
+							<h3 id="health_forms" class="checker">Submit Health Forms</h3>
+							<p>TODO!!!!! More description can go here if needed</p>
+						</div>
 						
-						<h3 id="health_forms" class="checker">Submit Health Forms</h3>
-						<p>TODO!!!!! More description can go here if needed</p>
+						<div class="checker-item">	
+							<h3 id="fb" class="checker">Meet other students considering Spring Hill</h3>
+							<p>Join the Facebook group for your graduating class with the link below to see where your potential classmates are from and get to know them before you ever reach the Hill.</p>
+							<p>
+							<a class="btn btn-small" href="http://www.facebook.com/groups/228942627170346/?ref=ts&fref=ts">Join the Class of 2017 on Facebook</a>
+							</p>
+						</div>
 						
-						<h3 id="fb" class="checker">Meet other students considering Spring Hill</h3>
-						<p>Join the Facebook group for your graduating class with the link below to see where your potential classmates are from and get to know them before you ever reach the Hill.</p>
-						<p>
-						<a class="btn btn-small" href="http://www.facebook.com/groups/228942627170346/?ref=ts&fref=ts">Join the Class of 2017 on Facebook</a>
-						</p>
+						<div class="checker-item">	
+							<h3 id="mobile" class="checker">Check out things to do in Mobile</h3>
+							<p>TODO!!!!! More description can go here if needed</p>
+						</div>
 						
-						<h3 id="mobile" class="checker">Check out things to do in Mobile</h3>
-						<p>TODO!!!!! More description can go here if needed</p>
-						
-						<h3 id="recruiter" class="checker">Contact my personal SHC Recuiter</h3>
-						<p>Your Admissions Counselor is available to answer any questions you may have about the process, or Spring Hill. Just ask!</p>
-						<p>
-						<a class="btn btn-small" href="http://www.shc.edu/ug/admissions/find-your-counselor">Find your counselor with our interactive map</a>
-						</p>
+						<div class="checker-item">	
+							<h3 id="recruiter" class="checker">Contact my personal SHC Recuiter</h3>
+							<p>Your Admissions Counselor is available to answer any questions you may have about the process, or Spring Hill. Just ask!</p>
+							<p>
+							<a class="btn btn-small" href="http://www.shc.edu/ug/admissions/find-your-counselor">Find your counselor with our interactive map</a>
+							</p>
+						</div>
 					</div>
 				</div>
 			</div>

@@ -197,6 +197,7 @@ body {
 	}
 }
 
+
 .checker_message {
     .box;
     color: #444;
@@ -207,17 +208,19 @@ body {
 	}
 }
 
-.checker.active .checker_item:hover {
-	cursor: pointer;
+.checker-item {
+	> * {
+			margin-left: 30px; 
+	}
 }
 
-.checker_item {
+.checkbox {
     float: left;
     width: 24px;
     height: 24px;
     background: url(static/images/checkbox_no.png) no-repeat left center;
     background-size: 100%;
-    margin-right: .3em;
+    margin-right: 6px;
     color: #FFF;
     .checker.checked & {
 		background: url(static/images/checkbox_yes.png) no-repeat left center;
@@ -225,9 +228,22 @@ body {
 	}
 }
 
+.checker {
+	margin-top: 25px;
+	margin-left: 0;
+}
+
+.checker.active .checkbox:hover {
+	cursor: pointer;
+}
+
 .checker_working {
     background: url(static/images/checkbox_working.gif) no-repeat left center !important;
     background-size: 100%;
+}
+
+.login.btn img {
+	margin-right: 6px;
 }
 
 
