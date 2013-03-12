@@ -19,6 +19,37 @@ var admin_user_name = "SHC Admissions"
 //var admin_user_email = "web_admiss@shc.edu"
 var admin_user_email = "chughes@shc.edu"
 
+var messages = {
+	'done' : {
+		title: 'All done!',
+		text: "Congrats! You're ready to be a Badger!"
+	},
+	'loginRequired': {
+		title: 'You need to log in with Facebook',
+		text: 'so we can keep track of your progress.<br><a href="#" class="login btn">Login now</a><br><small>There&lsquo;s also a login link in the sidebar'
+	},
+	'fbRegistered': {
+		title: 'Hi ' + localUserName,
+		text: 'You have successfully registered through Facebook.'
+	},
+	'fbLogin': {
+		title: 'Hi ' + localUserName,
+		text: 'You have successfully signed in through Facebook.'
+	},
+	'fbLoginError': {
+		title: 'Whoops',
+		text: 'User cancelled the Facebook login or did not fully authorize.'
+	},
+	'logout': {
+		title: 'Bye',
+		text: 'You have successfully signed out.'
+	},
+	'saveError': {
+		title: 'Whoops',
+		text: 'Something went wrong and your choice was not saved. Please try again.'
+	}
+}
+
 var currentUser = null
 var localUserName = "User"
 
@@ -63,8 +94,8 @@ ks.ready(function() {
 		// show message if all checkboxes are checked
 		if (checkers.length == $('.checker.checked').length) {
 			$.pnotify({
-				title: 'All done!',
-				text: "Congrats! You're ready to be a Badger!",
+				title: messages.done.title,
+				text: messages.done.text,
 				type: 'success',
 			})
 		}
@@ -106,7 +137,11 @@ ks.ready(function() {
                         check_complete()
                     },
                     error: function(model, error) {
-                        alert("Something went wrong and your choice was not saved. Please try again.")
+						$.pnotify({
+							title: messages.saveError.title,
+							text: messages.saveError.text,
+							type: 'error',
+						})
                     }
                 });
             })
@@ -158,8 +193,8 @@ ks.ready(function() {
             make_checkbox($(this))
             $(this).find(".checkbox").on('click', function() {
 				permanotice_login = $.pnotify({
-					title: 'You need to log in with Facebook',
-					text: 'so we can keep track of your progress.<br><a href="#" class="login btn">Login now</a><br><small>There&lsquo;s also a login link in the sidebar',
+					title: messages.loginRequired.title,
+					text: messages.loginRequired.text,
 					type: 'info',
 					hide: false // this one is important, so make it sticky
 				})
@@ -188,8 +223,8 @@ ks.ready(function() {
                             success: function() {
                                 // User signed up and logged in through Facebook
 								$.pnotify({
-									title: 'Hi ' + localUserName,
-									text: 'You have successfully registered through Facebook.',
+									title: messages.fbRegistered.title,
+									text: messages.fbRegistered.text,
 									type: 'info',
 								})
 								send_email_on_new_user_reg()
@@ -201,8 +236,8 @@ ks.ready(function() {
 					// User logged in through Facebook
 					localUserName = currentUser.get('name')
 					$.pnotify({
-						title: 'Hi ' + localUserName,
-						text: 'You have successfully signed in through Facebook.',
+						title: messages.fbLogin.title,
+						text: messages.fbLogin.text,
 						type: 'info',
 					})
                 }
@@ -211,8 +246,8 @@ ks.ready(function() {
             },
             error: function(user, error) {
 				$.pnotify({
-					title: 'Whoops',
-					text: 'User cancelled the Facebook login or did not fully authorize.',
+					title: messages.fbLoginError.title,
+					text: messages.fbLoginError.text,
 					type: 'error',
 				})
             }
@@ -268,8 +303,8 @@ ks.ready(function() {
         show_anon_msg()
         build_dummy_checkers()
         $.pnotify({
-			title: 'Bye',
-			text: 'You have successfully signed out.',
+			title: messages.logout.title,
+			text: messages.logout.text,
 			type: 'info'
 		})
         return false
