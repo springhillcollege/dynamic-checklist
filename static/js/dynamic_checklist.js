@@ -6,52 +6,6 @@ Build and persist checkboxes
 
 // Facebook developer: https://developers.facebook.com/apps
 
-var this_url = "https://www.shc.edu/sandbox/dynamic-checklist/"
-var this_url_tracker = this_url + "?utm_source=facebook&utm_medium=online&utm_campaign=you_gotta_see_this"
-var page_partial_cache_url = "https://www.shc.edu/assets/page-partials/"
-
-var remote_main_menu_url = page_partial_cache_url + "remote_menu.main.inner.html"
-var remote_admiss_menu_url = page_partial_cache_url + "remote_menu.secondary.admiss.how_to_apply.html"
-var remote_services_menu_url = page_partial_cache_url + "remote_menu.services.html"
-var remote_social_menu_url = page_partial_cache_url + "remote_menu.social.html"
-
-var admin_user_name = "SHC Admissions"
-//var admin_user_email = "web_admiss@shc.edu"
-var admin_user_email = "chughes@shc.edu"
-
-var messages = {
-	'done' : {
-		title: 'All done!',
-		text: "Congrats! You're ready to be a Badger!"
-	},
-	'loginRequired': {
-		title: 'You can log in with Facebook',
-		text: 'and we will keep track of your progress.<br><a href="#" class="login btn">Login now</a><br><small>There&lsquo;s also a login link in the sidebar'
-	},
-	'fbRegistered': {
-		title: 'Hi ',
-		text: 'You have successfully registered through Facebook.'
-	},
-	'fbLogin': {
-		title: 'Hi ',
-		text: 'You have successfully signed in through Facebook.'
-	},
-	'fbLoginError': {
-		title: 'Whoops',
-		text: 'User cancelled the Facebook login or did not fully authorize.'
-	},
-	'logout': {
-		title: 'Bye',
-		text: 'You have successfully signed out.'
-	},
-	'saveError': {
-		title: 'Whoops',
-		text: 'Something went wrong and your choice was not saved. Please try again.'
-	}
-}
-
-// Leave everything else alone
-
 
 var do_checker = function() {
 	// can the browser handle it?
@@ -263,6 +217,74 @@ var send_email_on_new_user_reg = function() {
 	{});
 }
 
+var clean_up_menu = function() {
+	// on load, clean up the menu to work with bootstrap
+	$(this).find('*').removeClass("active active-trail")
+	$(this).find("ul").addClass("nav nav-list")
+	// add submenus
+	$(this).find('.expanded').each(function() {
+		list = $(this)
+		list.addClass("dropdown")
+		list.find("a:first").addClass("dropdown-toggle").attr({'href':'#', 'data-toggle':'dropdown'}).append('<b class="caret"></b>')
+		list.find("ul").addClass('dropdown-menu')
+	})
+	// set block title as menu title
+	var title = $("#admiss_menu h2")
+	$("#admiss_menu ul").first().prepend('<li class="nav-header">' + title.text() + '</li>')
+	title.remove()
+}
+
+
+/* Edit these if needed */
+
+var this_url = "https://www.shc.edu/sandbox/dynamic-checklist/"
+var this_url_tracker = this_url + "?utm_source=facebook&utm_medium=online&utm_campaign=you_gotta_see_this"
+var page_partial_cache_url = "https://www.shc.edu/assets/page-partials/"
+
+var partials = [
+	{url: page_partial_cache_url + "remote_menu.main.inner.html", selector: "#main-menu", callback: null },
+	{url: page_partial_cache_url + "remote_menu.secondary.admiss.how_to_apply.html", selector: "#admiss_menu .ajax", callback: clean_up_menu },
+	{url: page_partial_cache_url + "remote_menu.services.html", selector: "#footer .service_menu", callback: null },
+	{url: page_partial_cache_url + "remote_menu.social.html", selector: "#footer .social_menu", callback: null }
+]
+
+var admin_user_name = "SHC Admissions"
+//var admin_user_email = "web_admiss@shc.edu"
+var admin_user_email = "chughes@shc.edu"
+
+var messages = {
+	'done' : {
+		title: 'All done!',
+		text: "Congrats! You're ready to be a Badger!"
+	},
+	'loginRequired': {
+		title: 'You can log in with Facebook',
+		text: 'and we will keep track of your progress.<br><a href="#" class="login btn">Login now</a><br><small>There&lsquo;s also a login link in the sidebar'
+	},
+	'fbRegistered': {
+		title: 'Hi ',
+		text: 'You have successfully registered through Facebook.'
+	},
+	'fbLogin': {
+		title: 'Hi ',
+		text: 'You have successfully signed in through Facebook.'
+	},
+	'fbLoginError': {
+		title: 'Whoops',
+		text: 'User cancelled the Facebook login or did not fully authorize.'
+	},
+	'logout': {
+		title: 'Bye',
+		text: 'You have successfully signed out.'
+	},
+	'saveError': {
+		title: 'Whoops',
+		text: 'Something went wrong and your choice was not saved. Please try again.'
+	}
+}
+
+/* Don't change anything else */
+
 var checkers = $(".checker")
 var message_area = $(".checker_message")
 var login_link = $("a.login")
@@ -333,25 +355,28 @@ ks.ready(function() {
     } // end else
     
     // load the menu partials cached from shc.edu
-    $("#main-menu").load(remote_main_menu_url)
-    $("#admiss_menu .ajax").load(remote_admiss_menu_url, function() {
-		// on load, clean up the menu to work with bootstrap
-		$(this).find('*').removeClass("active active-trail")
-		$(this).find("ul").addClass("nav nav-list")
-		// add submenus
-		$(this).find('.expanded').each(function() {
-			list = $(this)
-			list.addClass("dropdown")
-			list.find("a:first").addClass("dropdown-toggle").attr({'href':'#', 'data-toggle':'dropdown'}).append('<b class="caret"></b>')
-			list.find("ul").addClass('dropdown-menu')
+    
+    var loadPartials = function(partials) {
+		var numPartials = partials.length
+		var partialsLoadCount = 0
+		consoleLog(numPartials)
+		
+		$.each(partials, function(i,v) {
+			if (v.callback) {
+				$(v.selector).load(v.url, v.callback)
+			}
+			else {
+				$(v.selector).load(v.url)
+			}
 		})
-		// set block title as menu title
-		var title = $("#admiss_menu h2")
-		$("#admiss_menu ul").first().prepend('<li class="nav-header">' + title.text() + '</li>')
-		title.remove()
-	})
-    $("#footer .service_menu").load(remote_services_menu_url)
-    $("#footer .social_menu").load(remote_social_menu_url)
+	}
+	
+	loadPartials(partials)
+    
+    //~ $("#main-menu").load(remote_main_menu_url)
+    //~ $("#admiss_menu .ajax").load(remote_admiss_menu_url, )
+    //~ $("#footer .service_menu").load(remote_services_menu_url)
+    //~ $("#footer .social_menu").load(remote_social_menu_url)
     
     //$('.share').on('click', function(){
 		//FB.ui(
