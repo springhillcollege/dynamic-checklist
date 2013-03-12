@@ -25,15 +25,15 @@ var messages = {
 		text: "Congrats! You're ready to be a Badger!"
 	},
 	'loginRequired': {
-		title: 'You need to log in with Facebook',
-		text: 'so we can keep track of your progress.<br><a href="#" class="login btn">Login now</a><br><small>There&lsquo;s also a login link in the sidebar'
+		title: 'You can log in with Facebook',
+		text: 'and we will keep track of your progress.<br><a href="#" class="login btn">Login now</a><br><small>There&lsquo;s also a login link in the sidebar'
 	},
 	'fbRegistered': {
-		title: 'Hi ' + localUserName,
+		title: 'Hi ',
 		text: 'You have successfully registered through Facebook.'
 	},
 	'fbLogin': {
-		title: 'Hi ' + localUserName,
+		title: 'Hi ',
 		text: 'You have successfully signed in through Facebook.'
 	},
 	'fbLoginError': {
@@ -50,226 +50,229 @@ var messages = {
 	}
 }
 
+// Leave everything else alone
+
+
+var do_checker = function() {
+	// can the browser handle it?
+	return window.JSON && window.JSON.parse;
+}
+
+var make_checkbox = function(context) {
+	// add a checkbox item to each checker
+	context.prepend('<span class="checkbox"></span>') //add the "checkbox"
+	context.find(".checkbox").css("height", context.css("height"));
+}
+
+var show_message = function() {
+	// gather data about checkboxes and update status
+	if (message_area.length >= 1) {
+		$(".n_checked").html($(".checked").length)
+		$(".n_checker").html($(".checker").length)
+		if (currentUser) {
+			$(".username").html(localUserName)
+		}
+		message_area.show()
+	}
+}
+
+var show_anon_msg = function() {
+	// only display messages designed for anon users
+	$(".anon").show();
+	$(".loggedin").hide();
+}
+
+var show_loggedin_msg = function() {
+	// only display the messages designed for logged in
+	$(".anon").hide();
+	$(".loggedin").show();
+}
+
+var check_complete = function() {
+	// show message if all checkboxes are checked
+	if (checkers.length == $('.checker.checked').length) {
+		$.pnotify({
+			title: messages.done.title,
+			text: messages.done.text,
+			type: 'success',
+		})
+	}
+}
+
+var build_checkers = function() {
+	// build our checklist
+	var chklist = null
+	var checked = []
+	
+	var ApplicationChecklist = Parse.Object.extend("ApplicationChecklist")
+	
+	// ensure we start with a clean slate
+	$(".checkbox").remove()
+	checkers.removeClass("checked").addClass("active")
+	checkers.off('click')
+
+	// configure all of the active checker items
+	checkers.each(function() {
+		var checker = $(this)
+		make_checkbox(checker)
+		var checkbox = checker.find(".checkbox")
+		// add active class as a styling hook
+		checkbox.on('click', function() {
+			checkbox.addClass("checker_working")
+			// add or remove the id of this item from storage
+			if (checker.hasClass("checked")) {
+				chklist.remove("checked", checker.attr("id"))
+			}
+			else {
+				chklist.addUnique("checked", checker.attr("id"))
+			}
+			// save data to Parse
+			chklist.save({
+				success: function(object) {
+					checker.toggleClass("checked");
+					show_message()
+					checkbox.removeClass("checker_working")
+					check_complete()
+				},
+				error: function(model, error) {
+					$.pnotify({
+						title: messages.saveError.title,
+						text: messages.saveError.text,
+						type: 'error',
+					})
+				}
+			});
+		})
+	})
+
+	// show that we are working on something
+	$(".checker_message .status").addClass("checker_working")
+	// Grab initial data if available
+	var query = new Parse.Query("ApplicationChecklist")
+	query.equalTo("user", currentUser)
+	
+	query.first({
+		success: function(results) {
+			if (!results) {
+				// no data for this user, create some
+				chklist = new ApplicationChecklist()
+				chklist.set("user", currentUser)
+				// only allow access to this data for the current user
+				chklist.setACL(new Parse.ACL(Parse.User.current()));
+			}
+			else {
+				// if we have data, use it!
+				var checked = results.get("checked")
+				$.each(checked, function(i, val) {
+					$("#" + val + " .checkbox").closest(".checker").addClass("checked")
+				})
+				chklist = results
+				check_complete()
+			}
+			show_message()
+			$(".checker_message .status").removeClass("checker_working")
+		},
+		error: function(error){
+			//console.log("could not load data")
+			$(".checker_message .status").removeClass("checker_working")
+		}
+	})
+}
+
+var build_dummy_checkers = function() {
+	// remove existing checkbox items
+	$(".checkbox").remove()
+	// reset classes and event handlers on checker items
+	checkers.off('click')
+	checkers.removeClass('checked')
+	checkers.addClass('active')
+	// add checkboxes and bind login message
+	checkers.each(function() {
+		make_checkbox($(this))
+		$(this).find(".checkbox").on('click', function() {
+			permanotice_login = $.pnotify({
+				title: messages.loginRequired.title,
+				text: messages.loginRequired.text,
+				type: 'info',
+				hide: false // this one is important, so make it sticky
+			})
+			//do_login()
+		})
+	})
+}
+
+var do_login = function() {
+	Parse.FacebookUtils.logIn("email", {
+		success: function(user) {
+			try {
+				permanotice_login.pnotify_remove()
+			} catch(err) { /*do nothing*/ }
+			currentUser = user
+			build_checkers()
+			console.log(currentUser)
+			if (!currentUser.existed()) {
+				// grab and save fb user name and email
+				FB.api('/me', function(response) {
+					currentUser.set("name",response.name)
+					localUserName = response.name
+					currentUser.set("email",response.email)
+					currentUser.set("login_source","fb")
+					currentUser.save(null, {
+						success: function() {
+							// User signed up and logged in through Facebook
+							$.pnotify({
+								title: messages.fbRegistered.title + localUserName,
+								text: messages.fbRegistered.text,
+								type: 'info',
+							})
+							send_email_on_new_user_reg()
+						}
+					})
+				});
+				
+			} else {
+				// User logged in through Facebook
+				localUserName = currentUser.get('name')
+				$.pnotify({
+					title: messages.fbLogin.title + localUserName,
+					text: messages.fbLogin.text,
+					type: 'info',
+				})
+			}
+			show_loggedin_msg()
+			show_message()
+		},
+		error: function(user, error) {
+			$.pnotify({
+				title: messages.fbLoginError.title,
+				text: messages.fbLoginError.text,
+				type: 'error',
+			})
+		}
+	});
+}
+
+var send_email_on_new_user_reg = function() {
+	// Let someone know we have a new user registration
+	Parse.Cloud.run('sendmail_admin_new_user_reg', {
+			'admin_user_name': admin_user_name,
+			'admin_user_email': admin_user_email,
+			'username': localUserName,
+			'email': currentUser.get('email')
+	},
+	{});
+}
+
+var checkers = $(".checker")
+var message_area = $(".checker_message")
+var login_link = $("a.login")
+var logout_link = $("a.logout")
+
 var currentUser = null
 var localUserName = "User"
 
 ks.ready(function() {
 
-    var do_checker = function() {
-        // can the browser handle it?
-        return window.JSON && window.JSON.parse;
-    }
-
-    var make_checkbox = function(context) {
-		// add a checkbox item to each checker
-        context.prepend('<span class="checkbox"></span>') //add the "checkbox"
-        context.find(".checkbox").css("height", context.css("height"));
-    }
-
-    var show_message = function() {
-		// gather data about checkboxes and update status
-        if (message_area.length >= 1) {
-            $(".n_checked").html($(".checked").length)
-            $(".n_checker").html($(".checker").length)
-            if (currentUser) {
-                $(".username").html(localUserName)
-            }
-            message_area.show()
-        }
-    }
-    
-    var show_anon_msg = function() {
-        // only display messages designed for anon users
-        $(".anon").show();
-        $(".loggedin").hide();
-    }
-    
-    var show_loggedin_msg = function() {
-		// only display the messages designed for logged in
-        $(".anon").hide();
-        $(".loggedin").show();
-    }
-    
-    var check_complete = function() {
-		// show message if all checkboxes are checked
-		if (checkers.length == $('.checker.checked').length) {
-			$.pnotify({
-				title: messages.done.title,
-				text: messages.done.text,
-				type: 'success',
-			})
-		}
-	}
-    
-    var build_checkers = function() {
-		// build our checklist
-        var chklist = null
-        var checked = []
-        
-        var ApplicationChecklist = Parse.Object.extend("ApplicationChecklist")
-        
-        // ensure we start with a clean slate
-        $(".checkbox").remove()
-        checkers.removeClass("checked").addClass("active")
-        checkers.off('click')
-
-        // configure all of the active checker items
-        checkers.each(function() {
-            var checker = $(this)
-            make_checkbox(checker)
-            var checkbox = checker.find(".checkbox")
-            // add active class as a styling hook
-            checkbox.on('click', function() {
-                checkbox.addClass("checker_working")
-                // add or remove the id of this item from storage
-                if (checker.hasClass("checked")) {
-                    chklist.remove("checked", checker.attr("id"))
-                }
-                else {
-                    chklist.addUnique("checked", checker.attr("id"))
-                }
-                // save data to Parse
-                chklist.save({
-                    success: function(object) {
-                        checker.toggleClass("checked");
-                        show_message()
-                        checkbox.removeClass("checker_working")
-                        check_complete()
-                    },
-                    error: function(model, error) {
-						$.pnotify({
-							title: messages.saveError.title,
-							text: messages.saveError.text,
-							type: 'error',
-						})
-                    }
-                });
-            })
-        })
-
-        // show that we are working on something
-        $(".checker_message .status").addClass("checker_working")
-		// Grab initial data if available
-        var query = new Parse.Query("ApplicationChecklist")
-        query.equalTo("user", currentUser)
-        
-        query.first({
-            success: function(results) {
-                if (!results) {
-                    // no data for this user, create some
-                    chklist = new ApplicationChecklist()
-                    chklist.set("user", currentUser)
-                    // only allow access to this data for the current user
-                    chklist.setACL(new Parse.ACL(Parse.User.current()));
-                }
-                else {
-					// if we have data, use it!
-                    var checked = results.get("checked")
-                    $.each(checked, function(i, val) {
-                        $("#" + val + " .checkbox").closest(".checker").addClass("checked")
-                    })
-                    chklist = results
-                    check_complete()
-                }
-                show_message()
-                $(".checker_message .status").removeClass("checker_working")
-            },
-            error: function(error){
-                //console.log("could not load data")
-                $(".checker_message .status").removeClass("checker_working")
-            }
-        })
-    }
-    
-    var build_dummy_checkers = function() {
-        // remove existing checkbox items
-        $(".checkbox").remove()
-        // reset classes and event handlers on checker items
-        checkers.off('click')
-        checkers.removeClass('checked')
-        checkers.addClass('active')
-        // add checkboxes and bind login message
-        checkers.each(function() {
-            make_checkbox($(this))
-            $(this).find(".checkbox").on('click', function() {
-				permanotice_login = $.pnotify({
-					title: messages.loginRequired.title,
-					text: messages.loginRequired.text,
-					type: 'info',
-					hide: false // this one is important, so make it sticky
-				})
-				//do_login()
-			})
-        })
-    }
-    
-    var do_login = function() {
-		Parse.FacebookUtils.logIn("email", {
-            success: function(user) {
-                try {
-					permanotice_login.pnotify_remove()
-				} catch(err) { /*do nothing*/ }
-                currentUser = user
-                build_checkers()
-                console.log(currentUser)
-                if (!currentUser.existed()) {
-                    // grab and save fb user name and email
-                    FB.api('/me', function(response) {
-                        currentUser.set("name",response.name)
-                        localUserName = response.name
-                        currentUser.set("email",response.email)
-                        currentUser.set("login_source","fb")
-                        currentUser.save(null, {
-                            success: function() {
-                                // User signed up and logged in through Facebook
-								$.pnotify({
-									title: messages.fbRegistered.title,
-									text: messages.fbRegistered.text,
-									type: 'info',
-								})
-								send_email_on_new_user_reg()
-                            }
-                        })
-                    });
-                    
-                } else {
-					// User logged in through Facebook
-					localUserName = currentUser.get('name')
-					$.pnotify({
-						title: messages.fbLogin.title,
-						text: messages.fbLogin.text,
-						type: 'info',
-					})
-                }
-                show_loggedin_msg()
-                show_message()
-            },
-            error: function(user, error) {
-				$.pnotify({
-					title: messages.fbLoginError.title,
-					text: messages.fbLoginError.text,
-					type: 'error',
-				})
-            }
-        });
-	}
-	
-	var send_email_on_new_user_reg = function() {
-		// Let someone know we have a new user registration
-		Parse.Cloud.run('sendmail_admin_new_user_reg', {
-				'admin_user_name': admin_user_name,
-				'admin_user_email': admin_user_email,
-				'username': localUserName,
-				'email': currentUser.get('email')
-		},
-		{});
-	}
-
-
-    var checkers = $(".checker")
-    var message_area = $(".checker_message")
-    var login_link = $("a.login")
-    var logout_link = $("a.logout")
     var currentUser = Parse.User.current()
     
     // set a shorter pines notify default delay
