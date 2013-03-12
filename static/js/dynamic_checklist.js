@@ -20,6 +20,7 @@ var admin_user_name = "SHC Admissions"
 var admin_user_email = "chughes@shc.edu"
 
 var currentUser = null
+var localUserName = "User"
 
 ks.ready(function() {
 
@@ -40,7 +41,7 @@ ks.ready(function() {
             $(".n_checked").html($(".checked").length)
             $(".n_checker").html($(".checker").length)
             if (currentUser) {
-                $(".username").html(currentUser.get("name"))
+                $(".username").html(localUserName)
             }
             message_area.show()
         }
@@ -170,7 +171,9 @@ ks.ready(function() {
     var do_login = function() {
 		Parse.FacebookUtils.logIn("email", {
             success: function(user) {
-                if (permanotice_login.pnotify_remove) permanotice_login.pnotify_remove();
+                try {
+					permanotice_login.pnotify_remove()
+				} catch(err) { /*do nothing*/ }
                 currentUser = user
                 build_checkers()
                 console.log(currentUser)
@@ -178,13 +181,14 @@ ks.ready(function() {
                     // grab and save fb user name and email
                     FB.api('/me', function(response) {
                         currentUser.set("name",response.name)
+                        localUserName = response.name
                         currentUser.set("email",response.email)
                         currentUser.set("login_source","fb")
                         currentUser.save(null, {
                             success: function() {
                                 // User signed up and logged in through Facebook
 								$.pnotify({
-									title: 'Hi ' + currentUser.get('name'),
+									title: 'Hi ' + localUserName,
 									text: 'You have successfully registered through Facebook.',
 									type: 'info',
 								})
@@ -195,8 +199,9 @@ ks.ready(function() {
                     
                 } else {
 					// User logged in through Facebook
+					localUserName = currentUser.get('name')
 					$.pnotify({
-						title: 'Hi ' + currentUser.get('name'),
+						title: 'Hi ' + localUserName,
 						text: 'You have successfully signed in through Facebook.',
 						type: 'info',
 					})
@@ -219,7 +224,7 @@ ks.ready(function() {
 		Parse.Cloud.run('sendmail_admin_new_user_reg', {
 				'admin_user_name': admin_user_name,
 				'admin_user_email': admin_user_email,
-				'username': currentUser.get('name'),
+				'username': localUserName,
 				'email': currentUser.get('email')
 		},
 		{});
@@ -236,18 +241,18 @@ ks.ready(function() {
     $.pnotify.defaults.delay = 3000;
     
     // TEST
-    //$('#destroy').on('click', function() {
-        //currentUser.destroy({
-            //success: function(obj) {
-                //alert("destroyed!")
-            //}
-        //})
-    //})
+    //~ $('#destroy').on('click', function() {
+        //~ currentUser.destroy({
+            //~ success: function(obj) {
+                //~ alert("destroyed!")
+            //~ }
+        //~ })
+    //~ })
     
-    //// TEST
-    //$('#sendmail').on('click', function() {
-        //send_email_on_new_user_reg()
-	//})
+    // TEST
+    //~ $('#sendmail').on('click', function() {
+        //~ send_email_on_new_user_reg()
+	//~ })
 	
 	// prettify link buttons
 	$('.content a.btn').append('&nbsp;<i class="icon-chevron-right"></i>')
