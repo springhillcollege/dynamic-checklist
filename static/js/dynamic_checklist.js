@@ -405,34 +405,5 @@ ks.ready(function() {
 
 	loadPartials(partials, fix_links)
 
-
-    //~ $("#main-menu").load(remote_main_menu_url)
-    //~ $("#admiss_menu .ajax").load(remote_admiss_menu_url, )
-    //~ $("#footer .service_menu").load(remote_services_menu_url)
-    //~ $("#footer .social_menu").load(remote_social_menu_url)
-    
-    //$('.share').on('click', function(){
-		//FB.ui(
-			//{
-				//method: 'feed',
-				//name: "I'm using the Spring Hill College Application Checklist",
-				//description: (
-					//'A quick and easy way to track your progress in the online admission process ' +
-					//'for Spring Hill College.'
-				//),
-				//link: this_url_tracker,
-				//picture: 'http://www.shc.edu/media/common/SHC_crest-100x100.png'
-			//},
-			//function(response) {
-				//if (response && response.post_id) {
-					//alert('Post was published.')
-				//} else {
-					//alert('Post was not published.')
-				//}
-			//}
-		//)
-		//return false
-	//})
-
 });
 
