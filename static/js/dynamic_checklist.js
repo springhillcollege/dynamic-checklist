@@ -217,12 +217,13 @@ var send_email_on_new_user_reg = function() {
 	{});
 }
 
-var clean_up_menu = function() {
+var clean_up_menu = function(context) {
 	// on load, clean up the menu to work with bootstrap
-	$(this).find('*').removeClass("active active-trail")
-	$(this).find("ul").addClass("nav nav-list")
+	// context = $("#admiss_menu")
+	context.find('*').removeClass("active active-trail")
+	context.find("ul").addClass("nav nav-list")
 	// add submenus
-	$(this).find('.expanded').each(function() {
+	context.find('.expanded').each(function() {
 		list = $(this)
 		list.addClass("dropdown")
 		list.find("a:first").addClass("dropdown-toggle").attr({'href':'#', 'data-toggle':'dropdown'}).append('<b class="caret"></b>')
@@ -235,23 +236,46 @@ var clean_up_menu = function() {
 }
 
 // load the menu partials cached from shc.edu
-var loadPartials = function(partials) {
-	var numPartials = partials.length
-	var partialsLoadCount = 0
-	consoleLog(numPartials)
-	
+var loadPartials = function(partials, callback) {
 	$.each(partials, function(i,v) {
-		if (v.callback) {
-			$(v.selector).load(v.url, v.callback)
-		}
-		else {
-			$(v.selector).load(v.url)
-		}
+		var self = $(v.selector)
+		$.ajax({
+			url: v.url,
+			cache: false
+		}).done(function( html ) {
+			self.html(html)
+			consoleLog(v.selector + " : " + v.callback + " : " + callback)
+			if (v.callback) {
+				v.callback(self)
+			}
+			if (callback) {
+				callback(self)
+			}
+		})
+
+		// if (v.callback) {
+		// 	$.ajax({
+		// 			url: v.url,
+		// 			cache: false
+		// 		}).done(function( html ) {
+		// 			$(v.selector).html(html);
+		// 		});
+		// 	//$(v.selector).load(v.url, v.callback)
+		// }
+		// else {
+		// 	$.ajax({
+		// 			url: v.url,
+		// 			cache: false
+		// 		}).done(function( html ) {
+		// 			$(v.selector).html(html);
+		// 		});
+		// 	// $(v.selector).load(v.url)
+		// }
 	})
 }
 
 var fix_links = function(context) {
-	context.("a").each(function() {
+	context.find("a").each(function() {
         href = $(this).attr("href") + "?device=desktop"
         if (href.indexOf("#") == -1 ) {
             $(this).attr("href", href)
@@ -378,11 +402,10 @@ ks.ready(function() {
     else {
         build_dummy_checkers()
     } // end else
-    
-    
-	
-	loadPartials(partials)
-    
+
+	loadPartials(partials, fix_links)
+
+
     //~ $("#main-menu").load(remote_main_menu_url)
     //~ $("#admiss_menu .ajax").load(remote_admiss_menu_url, )
     //~ $("#footer .service_menu").load(remote_services_menu_url)
