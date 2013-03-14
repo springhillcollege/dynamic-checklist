@@ -234,6 +234,31 @@ var clean_up_menu = function() {
 	title.remove()
 }
 
+// load the menu partials cached from shc.edu
+var loadPartials = function(partials) {
+	var numPartials = partials.length
+	var partialsLoadCount = 0
+	consoleLog(numPartials)
+	
+	$.each(partials, function(i,v) {
+		if (v.callback) {
+			$(v.selector).load(v.url, v.callback)
+		}
+		else {
+			$(v.selector).load(v.url)
+		}
+	})
+}
+
+var fix_links = function(context) {
+	context.("a").each(function() {
+        href = $(this).attr("href") + "?device=desktop"
+        if (href.indexOf("#") == -1 ) {
+            $(this).attr("href", href)
+        }
+    })
+}
+
 
 /* Edit these if needed */
 
@@ -354,22 +379,7 @@ ks.ready(function() {
         build_dummy_checkers()
     } // end else
     
-    // load the menu partials cached from shc.edu
     
-    var loadPartials = function(partials) {
-		var numPartials = partials.length
-		var partialsLoadCount = 0
-		consoleLog(numPartials)
-		
-		$.each(partials, function(i,v) {
-			if (v.callback) {
-				$(v.selector).load(v.url, v.callback)
-			}
-			else {
-				$(v.selector).load(v.url)
-			}
-		})
-	}
 	
 	loadPartials(partials)
     
