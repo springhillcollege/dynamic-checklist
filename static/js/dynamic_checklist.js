@@ -127,7 +127,7 @@ var build_checkers = function() {
 			$(".checker_message .status").removeClass("checker_working")
 		},
 		error: function(error){
-			//console.log("could not load data")
+			//consoleLog("could not load data")
 			$(".checker_message .status").removeClass("checker_working")
 		}
 	})
@@ -150,7 +150,6 @@ var build_dummy_checkers = function() {
 				type: 'info',
 				hide: false // this one is important, so make it sticky
 			})
-			//do_login()
 		})
 	})
 }
@@ -219,7 +218,6 @@ var send_email_on_new_user_reg = function() {
 
 var clean_up_menu = function(context) {
 	// on load, clean up the menu to work with bootstrap
-	// context = $("#admiss_menu")
 	context.find('*').removeClass("active active-trail")
 	context.find("ul").addClass("nav nav-list")
 	// add submenus
@@ -252,25 +250,6 @@ var loadPartials = function(partials, callback) {
 				callback(self)
 			}
 		})
-
-		// if (v.callback) {
-		// 	$.ajax({
-		// 			url: v.url,
-		// 			cache: false
-		// 		}).done(function( html ) {
-		// 			$(v.selector).html(html);
-		// 		});
-		// 	//$(v.selector).load(v.url, v.callback)
-		// }
-		// else {
-		// 	$.ajax({
-		// 			url: v.url,
-		// 			cache: false
-		// 		}).done(function( html ) {
-		// 			$(v.selector).html(html);
-		// 		});
-		// 	// $(v.selector).load(v.url)
-		// }
 	})
 }
 
@@ -350,13 +329,13 @@ ks.ready(function() {
     $.pnotify.defaults.delay = 3000;
     
     // TEST
-    //~ $('#destroy').on('click', function() {
-        //~ currentUser.destroy({
-            //~ success: function(obj) {
-                //~ alert("destroyed!")
-            //~ }
-        //~ })
-    //~ })
+    // $('#destroy').on('click', function() {
+    //     currentUser.destroy({
+    //         success: function(obj) {
+    //             alert("destroyed!")
+    //         }
+    //     })
+    // })
     
     // TEST
     //~ $('#sendmail').on('click', function() {
@@ -403,6 +382,7 @@ ks.ready(function() {
         build_dummy_checkers()
     } // end else
 
+    // load menus from cached partials
 	loadPartials(partials, fix_links)
 
 });
