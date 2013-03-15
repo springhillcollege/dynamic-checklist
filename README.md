@@ -1,5 +1,5 @@
-dynamic-checklist
-=================
+SHC Application Checklist
+=========================
 
 This is a purpose-specific checklist app for the Spring Hill College Application Checklist.
 
